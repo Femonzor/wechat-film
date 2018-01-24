@@ -1,67 +1,65 @@
 "use strict";
 
 import sha1 from "sha1";
-import { request } from "http";
-import { resolve } from "dns";
+import request from "request";
 
+const requestPromise = Promise.promisify(request);
 const prefix = "https://api.weixin.qq.com/cgi-bin";
 const api = {
-    accessToken: prefix + "/token?grant_type=client_credential"
+    accessTokenUrl: prefix + "/token?grant_type=client_credential"
 };
 
 class AccessToken {
-    constructor(opts) {
-        this.appId = opts.appId;
-        this.appSecret = opts.appSecret;
-        this.getAccessToken = opts.getAccessToken;
-        this.saveAccessToken = opts.saveAccessToken;
-        let data;
-        try {
-            const accessToken = this.getAccessToken();
-            data = JSON.parse(accessToken);
-            if (!this.isValidAccessToken(data)) {
-                data = this.updateAccessToken();
+    constructor(options) {
+        Object.assign(this, options);
+        this.getAccessToken().then(data => {
+            try {
+                data = JSON.parse(data);
+                if (this.isValidAccessToken(data)) {
+                    Promise.resolve(data);
+                } else {
+                    return this.updateAccessToken();
+                }
+            } catch (error) {
+                return this.updateAccessToken();
             }
-        } catch (e) {
-            data = this.updateAccessToken();
-        }
-        this.accessToken = data.accessToken;
-        this.expiresIn = data.expiresIn;
-        this.saveAccessToken(data);
+        }).then(data => {
+            Object.assign(this, data);
+            this.saveAccessToken(JSON.stringify(data));
+        });
     }
     isValidAccessToken(data) {
-        if (!data || !data.accessToken || !data.expiresIn) return false;
-        const { accessToken, expiresIn } = data;
+        if (!data || !data.access_token || !data.expires_in) return false;
+        const { access_token, expires_in } = data;
         const now = new Date().getTime();
-        return now < expiresIn ? true : false;
+        return now < expires_in ? true : false;
     }
     updateAccessToken(data) {
         const { appId, appSecret } = this;
-        const url = `${api.accessToken}&appid=${appId}&secret=${appSecret}`;
+        const url = `${api.accessTokenUrl}&appid=${appId}&secret=${appSecret}`;
         return new Promise((resolve, reject) => {
-            request({
-                url: url,
-                json: true
-            }, (response) => {
-                const data = response[1];
+            requestPromise({ url: url, json: true }).then(response => {
+                const data = response.body;
                 const now = new Date().getTime();
-                const expiresIn = now + (data.expiresIn - 20) * 1000;
-                data.expiresIn = expiresIn;
+                data.expires_in = now + (data.expires_in - 20) * 1000;
                 resolve(data);
             });
         });
     }
 }
 
-export default opts => context => {
-    const { token } = opts;
-    const { signature, nonce, timestamp, echostr } = context.query;
-    const str = [token, timestamp, nonce].sort().join("");
-    const sha = sha1(str);
-    if (sha === signature) {
-        context.body = echostr + "";
-        console.log("success");
-    } else {
-        context.body = "wrong";
-    }
+export default options => {
+    const accessToken = new AccessToken(options);
+    return context => {
+        const { token } = options;
+        const { signature, nonce, timestamp, echostr } = context.query;
+        const str = [token, timestamp, nonce].sort().join("");
+        const sha = sha1(str);
+        if (sha === signature) {
+            context.body = echostr + "";
+            console.log("success");
+        } else {
+            context.body = "wrong";
+        }
+    };
 };
