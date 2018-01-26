@@ -1,5 +1,3 @@
-"use strict";
-
 import Koa from "koa";
 import sha1 from "sha1";
 import { join } from "path";
