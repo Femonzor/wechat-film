@@ -59,3 +59,4 @@ typings/
 
 # custom
 src/token.txt
+src/config.js

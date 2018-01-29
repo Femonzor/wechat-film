@@ -7,11 +7,12 @@ import { getReplyObject } from "./object";
  */
 export const reply = (context, message) => {
     const obj = getReplyObject(message);
+    const xml = obj.toXML();
     if (obj) {
         Object.assign(context, {
             status: 200,
             type: "application/xml",
-            body: obj.toXML()
+            body: xml
         });
     }
 };
