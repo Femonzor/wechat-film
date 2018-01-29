@@ -8,6 +8,7 @@ class Message extends Base {
      * @param {string} MsgType      消息类型
      */
     constructor(ToUserName, FromUserName, MsgType) {
+        super();
         Object.assign(this, {
             ToUserName,
             FromUserName,
@@ -17,4 +18,4 @@ class Message extends Base {
     }
 }
 
-export default MessageBase;
+export default Message;

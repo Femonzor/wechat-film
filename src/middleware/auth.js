@@ -3,7 +3,8 @@
 import sha1 from "sha1";
 import getRawBody from "raw-body";
 import AccessToken from "../model/accessToken";
-import { parseXMLAsync, formatMessage } from "../util/xml"; 
+import { parseXMLAsync, formatMessage } from "../util/xml";
+import { reply } from "../util/handle";
 
 export default options => {
     const accessToken = new AccessToken(options);
@@ -33,17 +34,18 @@ export default options => {
             const content = await parseXMLAsync(data);
             const message = formatMessage(content.xml);
             console.log(message);
-            if (message.MsgType === "event") {
-                const now = new Date().getTime();
-                if (message.Event === "subscribe") {
-                    Object.assign(context, {
-                        status: 200,
-                        type: "application/xml",
-                        body: `<xml><ToUserName><![CDATA[${message.FromUserName}]]></ToUserName><FromUserName><![CDATA[${message.ToUserName}]]></FromUserName><CreateTime>${now}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[你好！]]></Content></xml>`
-                    });
-                    return;
-                }
-            }
+            reply(context, message);
+            // if (message.MsgType === "event") {
+            //     const now = new Date().getTime();
+            //     if (message.Event === "subscribe") {
+            //         Object.assign(context, {
+            //             status: 200,
+            //             type: "application/xml",
+            //             body: `<xml><ToUserName><![CDATA[${message.FromUserName}]]></ToUserName><FromUserName><![CDATA[${message.ToUserName}]]></FromUserName><CreateTime>${now}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[你好！]]></Content></xml>`
+            //         });
+            //         return;
+            //     }
+            // }
         }
     };
 };
