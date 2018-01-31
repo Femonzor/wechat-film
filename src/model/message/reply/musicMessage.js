@@ -1,5 +1,5 @@
 import Message from "../message";
-import { MUSIC_TYPE } from "../../constant/message";
+import { MUSIC_TYPE } from "../../../constant/message";
 
 class MusicMessage extends Message {
     constructor(ToUserName, FromUserName, Title, Description, MusicURL, HQMusicRul, ThumbMediaId) {

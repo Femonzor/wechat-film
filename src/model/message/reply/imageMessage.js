@@ -1,6 +1,6 @@
 import Message from "../message";
 import MessageImage from "../image";
-import { IMAGE_TYPE } from "../../constant/message";
+import { IMAGE_TYPE } from "../../../constant/message";
 
 class ImageMessage extends Message {
     constructor(ToUserName, FromUserName, MediaId) {

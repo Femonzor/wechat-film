@@ -1,5 +1,5 @@
 import Message from "../message";
-import { VOICE_TYPE } from "../../constant/message";
+import { VOICE_TYPE } from "../../../constant/message";
 
 class VoiceMessage extends Message {
     constructor(ToUserName, FromUserName, MediaId) {

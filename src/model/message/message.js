@@ -12,8 +12,8 @@ class Message extends Base {
         Object.assign(this, {
             ToUserName,
             FromUserName,
-            MsgType,
-            CreateTime: new Date().getTime()
+            CreateTime: new Date().getTime(),
+            MsgType
         });
     }
 }

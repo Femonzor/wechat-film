@@ -13,4 +13,6 @@ class Article extends Base {
     }
 }
 
+Article.prototype.closureTag = "item";
+
 export default Article;
