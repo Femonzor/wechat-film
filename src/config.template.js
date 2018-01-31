@@ -2,6 +2,7 @@ import { join } from "path";
 import { readFileAsync, writeFileAsync } from "./util/file";
 
 const tokenFile = join(__dirname, "token.txt");
+const prefix = "https://api.weixin.qq.com/cgi-bin";
 
 export default {
     wechat: {
@@ -10,5 +11,9 @@ export default {
         token: "ftxbtfj9j6nrippoqkl0v781",
         getAccessToken: () => readFileAsync(tokenFile),
         saveAccessToken: (content) => writeFileAsync(tokenFile, content)
+    },
+    api: {
+        accessTokenUrl: `${prefix}/token?grant_type=client_credential`,
+        uploadUrl: `${prefix}/media/upload`
     }
 };

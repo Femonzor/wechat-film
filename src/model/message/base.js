@@ -15,8 +15,7 @@ class Base {
                 }
                 xml += `<${member}>${tmpXml}</${member}>`;
             } else if (objType !== "Undefined") {
-                if (member === "ArticleCount") xml += `<${member}>${value}</${member}>`;
-                else xml += `<${member}><![CDATA[${value}]]></${member}>`;
+                xml += `<${member}><![CDATA[${value}]]></${member}>`;
             }
         }
         if (!body) return `<xml>${xml}</xml>`;

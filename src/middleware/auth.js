@@ -2,12 +2,12 @@
 
 import sha1 from "sha1";
 import getRawBody from "raw-body";
-import AccessToken from "../model/accessToken";
+import Wechat from "../model/wechat";
 import { parseXMLAsync, formatMessage } from "../util/xml";
 import { reply } from "../util/handle";
 
 export default options => {
-    const accessToken = new AccessToken(options);
+    const accessToken = new Wechat(options);
     return async context => {
         const { token } = options;
         const { signature, nonce, timestamp, echostr } = context.query;
@@ -35,17 +35,6 @@ export default options => {
             const message = formatMessage(content.xml);
             console.log(message);
             reply(context, message);
-            // if (message.MsgType === "event") {
-            //     const now = new Date().getTime();
-            //     if (message.Event === "subscribe") {
-            //         Object.assign(context, {
-            //             status: 200,
-            //             type: "application/xml",
-            //             body: `<xml><ToUserName><![CDATA[${message.FromUserName}]]></ToUserName><FromUserName><![CDATA[${message.ToUserName}]]></FromUserName><CreateTime>${now}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[你好！]]></Content></xml>`
-            //         });
-            //         return;
-            //     }
-            // }
         }
     };
 };
