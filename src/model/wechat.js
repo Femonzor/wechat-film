@@ -16,15 +16,17 @@ class Wechat {
         const now = new Date().getTime();
         return now < expires_in ? true : false;
     }
-    updateAccessToken(data) {
+    updateAccessToken() {
         const { appId, appSecret } = this;
         const url = `${api.accessTokenUrl}&appid=${appId}&secret=${appSecret}`;
         return new Promise((resolve, reject) => {
             requestPromise({ url: url, json: true }).then(response => {
-                const data = response.body;
+                const { body } = response;
                 const now = new Date().getTime();
-                data.expires_in = now + (data.expires_in - 20) * 1000;
-                resolve(data);
+                body.expires_in = now + (body.expires_in - 20) * 1000;
+                resolve(body);
+            }).catch(error => {
+                reject(error);
             });
         });
     }
@@ -54,10 +56,17 @@ class Wechat {
         const form = {
             media: createReadStream(filePath)
         };
-        const { access_token } = this;
         return new Promise((resolve, reject) => {
             this.fetchAccessToken().then(data => {
+                const { access_token } = this;
                 const url = `${api.uploadMediaUrl}?access_token=${access_token}&type=${type}`;
+                requestPromise({ method: "POST", formData: form, url: url, json: true }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("Upload media fails");
+                }).catch(error => {
+                    reject(error);
+                });
             });
         });
     }

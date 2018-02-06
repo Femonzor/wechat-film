@@ -14,6 +14,6 @@ export default {
     },
     api: {
         accessTokenUrl: `${prefix}/token?grant_type=client_credential`,
-        uploadUrl: `${prefix}/media/upload`
+        uploadMediaUrl: `${prefix}/media/upload`
     }
 };

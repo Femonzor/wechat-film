@@ -14,6 +14,9 @@ class Base {
                     tmpXml += data.toXML(data.closureTag);
                 }
                 xml += `<${member}>${tmpXml}</${member}>`;
+            } else if (objType === "Object") {
+                tmpXml = value.toXML(true);
+                xml += `<${member}>${tmpXml}</${member}>`;
             } else if (objType !== "Undefined") {
                 xml += `<${member}><![CDATA[${value}]]></${member}>`;
             }

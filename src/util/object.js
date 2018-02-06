@@ -1,9 +1,14 @@
 import ReplyTextMessage from "../model/message/reply/textMessage";
 import ReplyNewsMessage from "../model/message/reply/newsMessage";
+import ReplyImageMessage from "../model/message/reply/imageMessage";
 import { type } from "./common";
+import Wechat from "../model/wechat";
+import config from "../config";
 
-export const getReplyObject = message => {
-    let data;
+const wechatApi = new Wechat(config.wechat);
+
+export const getReplyObject = async message => {
+    let data, replyType;
     const options = {};
     const { MsgType } = message;
     if (MsgType === "event") {
@@ -23,13 +28,17 @@ export const getReplyObject = message => {
         } else if (Event === "VIEW") {
             data = `您点击了菜单中的链接: ${message.EventKey}`;
         }
+        replyType = "text";
     } else if (MsgType === "text") {
         const { Content } = message;
         if (Content === "1") {
+            replyType = "text";
             data = "大米";
         } else if (Content === "2") {
+            replyType = "text";
             data = "豆腐";
         } else if (Content === "3") {
+            replyType = "news";
             data = [{
                 Title: "naruto",
                 Description: "火影忍者",
@@ -41,24 +50,31 @@ export const getReplyObject = message => {
                 PicUrl: "https://femonzor.com/resource/images/koala.jpg",
                 Url: "https://femonzor.com/resource/images/koala.jpg"
             }]
+        } else if (Content === "4") {
+            replyType = "image";
+            data = await wechatApi.uploadMedia("image", "/Users/yzw/Downloads/favicon.png");
         }
     }
     Object.assign(options, {
         ToUserName: message.FromUserName,
         FromUserName: message.ToUserName
     });
-    const objType = type(data);
-    if (objType === "String") {
+    if (replyType === "text") {
         Object.assign(options, {
             Content: data
         });
         return new ReplyTextMessage(options);
-    } else if (objType === "Array") {
+    } else if (replyType === "news") {
         Object.assign(options, {
             ArticleCount: data.length,
             Articles: data
         });
         return new ReplyNewsMessage(options);
+    } else if (replyType === "image") {
+        Object.assign(options, {
+            MediaId: data.media_id 
+        });
+        return new ReplyImageMessage(options);
     }
     return null;
 };

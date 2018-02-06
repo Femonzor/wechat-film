@@ -6,6 +6,7 @@ class Image extends Base {
      * @param {string} MediaId 通过素材管理中的接口上传多媒体文件得到的id
      */
     constructor(MediaId) {
+        super();
         Object.assign(this, {
             MediaId
         });

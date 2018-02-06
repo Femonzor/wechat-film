@@ -34,7 +34,7 @@ export default options => {
             const content = await parseXMLAsync(data);
             const message = formatMessage(content.xml);
             console.log(message);
-            reply(context, message);
+            await reply(context, message);
         }
     };
 };

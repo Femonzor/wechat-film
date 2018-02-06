@@ -5,8 +5,8 @@ import { getReplyObject } from "./object";
  * @param {Ojbect} context koa context上下文
  * @param {Object} message 微信消息对象
  */
-export const reply = (context, message) => {
-    const obj = getReplyObject(message);
+export const reply = async (context, message) => {
+    const obj = await getReplyObject(message);
     const xml = obj.toXML();
     if (obj) {
         Object.assign(context, {
