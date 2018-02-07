@@ -1,6 +1,7 @@
 import ReplyTextMessage from "../model/message/reply/textMessage";
 import ReplyNewsMessage from "../model/message/reply/newsMessage";
 import ReplyImageMessage from "../model/message/reply/imageMessage";
+import ReplyVideoMessage from "../model/message/reply/videoMessage";
 import { type } from "./common";
 import Wechat from "../model/wechat";
 import config from "../config";
@@ -52,7 +53,13 @@ export const getReplyObject = async message => {
             }]
         } else if (Content === "4") {
             replyType = "image";
-            data = await wechatApi.uploadMedia("image", "/Users/yzw/Downloads/favicon.png");
+            data = await wechatApi.uploadMedia("image", "/Users/yzw/Code/wechat-film/resource/favicon.png");
+        } else if (Content === "5") {
+            replyType = "video";
+            data = await wechatApi.uploadMedia("video", "/Users/yzw/Code/wechat-film/resource/video.mp4");
+        } else if (Content === "6") {
+            replyType = "voice";
+            data = await wechatApi.uploadMedia("voice", "/Users/yzw/Code/wechat-film/resource/voice.mp3");
         }
     }
     Object.assign(options, {
@@ -75,6 +82,14 @@ export const getReplyObject = async message => {
             MediaId: data.media_id 
         });
         return new ReplyImageMessage(options);
+    } else if (replyType === "video") {
+        // console.log(data);
+        Object.assign(options, {
+            MediaId: data.media_id,
+            Title: "视频",
+            Description: "视频简介"
+        });
+        return new ReplyVideoMessage(options);
     }
     return null;
 };

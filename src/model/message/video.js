@@ -8,6 +8,7 @@ class Video extends Base {
      * @param {string} Description 
      */
     constructor(MediaId, Title, Description) {
+        super();
         Object.assign(this, {
             MediaId,
             Title,
@@ -16,4 +17,4 @@ class Video extends Base {
     }
 }
 
-export default Voice;
+export default Video;

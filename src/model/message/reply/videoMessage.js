@@ -1,13 +1,15 @@
 import Message from "../message";
+import MessageVideo from "../video";
 import { VIDEO_TYPE } from "../../../constant/message";
 
 class VideoMessage extends Message {
-    constructor(ToUserName, FromUserName, MediaId, Title, Description) {
+    constructor(paramObj) {
+        const { ToUserName, FromUserName, MediaId, Title, Description } = paramObj;
         super(ToUserName, FromUserName, VIDEO_TYPE);
         Object.assign(this, {
-            MediaId,
-            Title,
-            Description
+            Video: new MessageVideo(MediaId, Title, Description)
         });
     }
 }
+
+export default VideoMessage;
