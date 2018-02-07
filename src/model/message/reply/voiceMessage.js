@@ -1,11 +1,13 @@
 import Message from "../message";
+import MessageVoice from "../voice";
 import { VOICE_TYPE } from "../../../constant/message";
 
 class VoiceMessage extends Message {
-    constructor(ToUserName, FromUserName, MediaId) {
+    constructor(paramObj) {
+        const { ToUserName, FromUserName, MediaId } = paramObj;
         super(ToUserName, FromUserName, VOICE_TYPE);
         Object.assign(this, {
-            MediaId
+            Voice: new MessageVoice(MediaId)
         });
     }
 }

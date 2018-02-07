@@ -2,6 +2,7 @@ import ReplyTextMessage from "../model/message/reply/textMessage";
 import ReplyNewsMessage from "../model/message/reply/newsMessage";
 import ReplyImageMessage from "../model/message/reply/imageMessage";
 import ReplyVideoMessage from "../model/message/reply/videoMessage";
+import ReplyVoiceMessage from "../model/message/reply/voiceMessage";
 import { type } from "./common";
 import Wechat from "../model/wechat";
 import config from "../config";
@@ -79,17 +80,21 @@ export const getReplyObject = async message => {
         return new ReplyNewsMessage(options);
     } else if (replyType === "image") {
         Object.assign(options, {
-            MediaId: data.media_id 
+            MediaId: data.media_id
         });
         return new ReplyImageMessage(options);
     } else if (replyType === "video") {
-        // console.log(data);
         Object.assign(options, {
             MediaId: data.media_id,
             Title: "视频",
             Description: "视频简介"
         });
         return new ReplyVideoMessage(options);
+    } else if (replyType === "voice") {
+        Object.assign(options, {
+            MediaId: data.media_id
+        });
+        return new ReplyVoiceMessage(options);
     }
     return null;
 };
