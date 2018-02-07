@@ -3,6 +3,7 @@ import ReplyNewsMessage from "../model/message/reply/newsMessage";
 import ReplyImageMessage from "../model/message/reply/imageMessage";
 import ReplyVideoMessage from "../model/message/reply/videoMessage";
 import ReplyVoiceMessage from "../model/message/reply/voiceMessage";
+import ReplyMusicMessage from "../model/message/reply/musicMessage";
 import { type } from "./common";
 import Wechat from "../model/wechat";
 import config from "../config";
@@ -61,6 +62,9 @@ export const getReplyObject = async message => {
         } else if (Content === "6") {
             replyType = "voice";
             data = await wechatApi.uploadMedia("voice", "/Users/yzw/Code/wechat-film/resource/voice.mp3");
+        } else if (Content === "7") {
+            replyType = "music";
+            data = await wechatApi.uploadMedia("thumb", "/Users/yzw/Code/wechat-film/resource/thumb.jpg");
         }
     }
     Object.assign(options, {
@@ -95,6 +99,16 @@ export const getReplyObject = async message => {
             MediaId: data.media_id
         });
         return new ReplyVoiceMessage(options);
+    } else if (replyType === "music") {
+        console.log(data);
+        Object.assign(options, {
+            Title: "音乐标题",
+            Description: "音乐简介",
+            MusicUrl: "http://ting666.yymp3.com:86/new27/huling7/1.mp3",
+            HQMusicUrl: "http://ting666.yymp3.com:86/new27/zhangbeibei/1.mp3",
+            ThumbMediaId: data.thumb_media_id
+        });
+        return new ReplyMusicMessage(options);
     }
     return null;
 };

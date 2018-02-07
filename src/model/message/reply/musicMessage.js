@@ -1,15 +1,21 @@
 import Message from "../message";
+import MessageMusic from "../music";
 import { MUSIC_TYPE } from "../../../constant/message";
 
 class MusicMessage extends Message {
-    constructor(ToUserName, FromUserName, Title, Description, MusicURL, HQMusicRul, ThumbMediaId) {
-        super(ToUserName, FromUserName, MUSIC_TYPE);
-        Object.assign(this, {
+    constructor(paramObj) {
+        const {
+            ToUserName,
+            FromUserName,
             Title,
             Description,
-            MusicURL,
-            HQMusicRul,
+            MusicUrl,
+            HQMusicUrl,
             ThumbMediaId
+        } = paramObj;
+        super(ToUserName, FromUserName, MUSIC_TYPE);
+        Object.assign(this, {
+            Music: new MessageMusic(Title, Description, MusicUrl, HQMusicUrl, ThumbMediaId)
         });
     }
 }

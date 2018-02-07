@@ -1,12 +1,13 @@
 import Base from "./base";
 
 class Music extends Base {
-    constructor(Title, Description, MusicURL, HQMusicRul, ThumbMediaId) {
+    constructor(Title, Description, MusicUrl, HQMusicUrl, ThumbMediaId) {
+        super();
         Object.assign(this, {
             Title,
             Description,
-            MusicURL,
-            HQMusicRul,
+            MusicUrl,
+            HQMusicUrl,
             ThumbMediaId
         });
     }
