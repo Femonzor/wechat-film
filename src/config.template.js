@@ -15,12 +15,18 @@ export default {
     api: {
         accessToken: `${prefix}/token?grant_type=client_credential`,
         temporary: {
-            upload: `${prefix}/media/upload`
+            upload: `${prefix}/media/upload`,
+            get: `${prefix}/media/get`
         },
         permanent: {
             uploadNews: `${prefix}/material/add_news`,
             uploadImg: `${prefix}/media/uploadimg`,
-            uploadMaterial: `${prefix}/material/add_material`
+            uploadMaterial: `${prefix}/material/add_material`,
+            get: `${prefix}/material/get_material`,
+            delete: `${prefix}/material/del_material`,
+            update: `${prefix}/material/update_news`,
+            count: `${prefix}/material/get_materialcount`,
+            batchget: `${prefix}/material/batchget_material`
         }
     }
 };
