@@ -55,16 +55,29 @@ export const getReplyObject = async message => {
             }]
         } else if (Content === "4") {
             replyType = "image";
-            data = await wechatApi.uploadMedia("image", "/Users/yzw/Code/wechat-film/resource/favicon.png");
+            data = await wechatApi.uploadMaterial("image", "/Users/yzw/Code/wechat-film/resource/favicon.png");
         } else if (Content === "5") {
             replyType = "video";
-            data = await wechatApi.uploadMedia("video", "/Users/yzw/Code/wechat-film/resource/video.mp4");
+            data = await wechatApi.uploadMaterial("video", "/Users/yzw/Code/wechat-film/resource/video.mp4");
         } else if (Content === "6") {
             replyType = "voice";
-            data = await wechatApi.uploadMedia("voice", "/Users/yzw/Code/wechat-film/resource/voice.mp3");
+            data = await wechatApi.uploadMaterial("voice", "/Users/yzw/Code/wechat-film/resource/voice.mp3");
         } else if (Content === "7") {
             replyType = "music";
-            data = await wechatApi.uploadMedia("thumb", "/Users/yzw/Code/wechat-film/resource/thumb.jpg");
+            data = await wechatApi.uploadMaterial("thumb", "/Users/yzw/Code/wechat-film/resource/thumb.jpg");
+        } else if (Content === "8") {
+            replyType = "text";
+            data = await wechatApi.uploadMaterial("image", "/Users/yzw/Code/wechat-film/resource/favicon.png", true);
+            console.log(data);
+            data = data.url;
+        } else if (Content === "9") {
+            replyType = "video";
+            data = await wechatApi.uploadMaterial("video", "/Users/yzw/Code/wechat-film/resource/video.mp4", {
+                description: JSON.stringify({
+                    title: "永久视频",
+                    introduction: "永久视频介绍"
+                })
+            });
         }
     }
     Object.assign(options, {
@@ -100,7 +113,6 @@ export const getReplyObject = async message => {
         });
         return new ReplyVoiceMessage(options);
     } else if (replyType === "music") {
-        console.log(data);
         Object.assign(options, {
             Title: "音乐标题",
             Description: "音乐简介",

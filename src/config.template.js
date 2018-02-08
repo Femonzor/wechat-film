@@ -13,7 +13,14 @@ export default {
         saveAccessToken: (content) => writeFileAsync(tokenFile, content)
     },
     api: {
-        accessTokenUrl: `${prefix}/token?grant_type=client_credential`,
-        uploadMediaUrl: `${prefix}/media/upload`
+        accessToken: `${prefix}/token?grant_type=client_credential`,
+        temporary: {
+            upload: `${prefix}/media/upload`
+        },
+        permanent: {
+            uploadNews: `${prefix}/material/add_news`,
+            uploadImg: `${prefix}/media/uploadimg`,
+            uploadMaterial: `${prefix}/material/add_material`
+        }
     }
 };

@@ -18,7 +18,7 @@ class Wechat {
     }
     updateAccessToken() {
         const { appId, appSecret } = this;
-        const url = `${api.accessTokenUrl}&appid=${appId}&secret=${appSecret}`;
+        const url = `${api.accessToken}&appid=${appId}&secret=${appSecret}`;
         return new Promise((resolve, reject) => {
             requestPromise({ url: url, json: true }).then(response => {
                 const { body } = response;
@@ -52,15 +52,34 @@ class Wechat {
             return Promise.resolve(data);
         });
     }
-    uploadMedia(type, filePath) {
-        const form = {
-            media: createReadStream(filePath)
-        };
+    uploadMaterial(type, material, permanent) {
+        let form = {};
+        let uploadUrl = api.temporary.upload;
+        if (permanent) uploadUrl = api.permanent.uploadMaterial;
+        if (type === "img") uploadUrl = api.permanent.uploadImg;
+        if (type === "news") {
+            uploadUrl = api.permanent.uploadNews;
+            form = material;
+        } else {
+            form.media = createReadStream(material);
+            if (type === "video" && permanent) Object.assign(form, permanent);
+        }
         return new Promise((resolve, reject) => {
             this.fetchAccessToken().then(data => {
                 const { access_token } = this;
-                const url = `${api.uploadMediaUrl}?access_token=${access_token}&type=${type}`;
-                requestPromise({ method: "POST", formData: form, url: url, json: true }).then(response => {
+                let url = `${uploadUrl}?access_token=${access_token}`;
+                if (!permanent || type === "material") url += `&type=${type}`;
+                const requestOptions = {
+                    method: "POST",
+                    url: url,
+                    json: true
+                };
+                if (type === "news") {
+                    requestOptions.body = form;
+                } else {
+                    requestOptions.formData = form;
+                }
+                requestPromise(requestOptions).then(response => {
                     const { body } = response;
                     if (body) resolve(body);
                     else throw new Error("Upload media fails");
