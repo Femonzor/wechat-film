@@ -78,6 +78,37 @@ export const getReplyObject = async message => {
                     introduction: "永久视频介绍"
                 })
             });
+        } else if (Content === "10") {
+            replyType = "news";
+            data = await wechatApi.uploadMaterial("image", "/Users/yzw/Code/wechat-film/resource/favicon.png", {});
+            console.log("data1:", data);
+            const picUrl = data.url;
+            const media = {
+                articles: [{
+                    title: "tututu",
+                    thumb_media_id: data.media_id,
+                    author: "yzw",
+                    digest: "没有摘要",
+                    show_cover_pic: 1,
+                    content: "没有内容",
+                    content_source_url: "https://github.com"
+                }]
+            };
+            data = await wechatApi.uploadMaterial("news", media, {});
+            console.log("data2:", data);
+            data = await wechatApi.getMaterial(data.media_id, "news", {});
+            console.log("data3:", data);
+            const newsItems = data.news_item;
+            const news = [];
+            newsItems.forEach(item => {
+                news.push({
+                    Title: item.title,
+                    Description: item.description,
+                    PicUrl: picUrl,
+                    Url: item.url
+                });
+            });
+            data = news;
         }
     }
     Object.assign(options, {

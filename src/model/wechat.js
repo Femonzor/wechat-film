@@ -14,6 +14,7 @@ class Wechat {
         if (!data || !data.access_token || !data.expires_in) return false;
         const { access_token, expires_in } = data;
         const now = new Date().getTime();
+        // console.log("now: %s, expires_in: %s", now, expires_in);
         return now < expires_in ? true : false;
     }
     updateAccessToken() {
@@ -32,21 +33,28 @@ class Wechat {
     }
     fetchAccessToken() {
         const { access_token, expires_in } = this;
+        // console.log("access_token: %s, expires_in: %s", access_token, expires_in);
         if (access_token && expires_in && this.isValidAccessToken(this)) {
+            // console.log("isValid");
             return Promise.resolve(this);
         }
         this.getAccessToken().then(data => {
             try {
+                // console.log("token: %s", data);
                 data = JSON.parse(data);
                 if (this.isValidAccessToken(data)) {
-                    Promise.resolve(data);
+                    // console.log("get and isValid");
+                    return Promise.resolve(data);
                 } else {
+                    // console.log("get and need to update");
                     return this.updateAccessToken();
                 }
             } catch (error) {
+                // console.log("get token into catch: %s", error);
                 return this.updateAccessToken();
             }
         }).then(data => {
+            // console.log("fetch end promise, data: %s", data);
             Object.assign(this, data);
             this.saveAccessToken(JSON.stringify(data));
             return Promise.resolve(data);
@@ -66,9 +74,10 @@ class Wechat {
         }
         return new Promise((resolve, reject) => {
             this.fetchAccessToken().then(data => {
+                // console.log("uploadMaterial Promise data:", data);
                 const { access_token } = this;
                 let url = `${uploadUrl}?access_token=${access_token}`;
-                if (!permanent || type === "material") url += `&type=${type}`;
+                if (!permanent || type !== "news") url += `&type=${type}`;
                 const requestOptions = {
                     method: "POST",
                     url: url,
@@ -90,14 +99,37 @@ class Wechat {
         });
     }
     getMaterial(mediaId, type, permanent) {
-        const getUrl = api.temporary.get;
+        let getUrl = api.temporary.get;
         if (permanent) getUrl = api.permanent.get;
         return new Promise((resolve, reject) => {
             this.fetchAccessToken().then(data => {
                 const { access_token } = this;
                 let url = `${getUrl}?access_token=${access_token}&media_id=${mediaId}`;
-                if (!permanent && type === "video") url = url.replace("https://", "http://");
-                resolve(url);
+                const form = {};
+                const options = {
+                    method: "POST",
+                    url,
+                    json: true
+                };
+                if (permanent) {
+                    Object.assign(form, {
+                        media_id: mediaId
+                    });
+                    options.body = form;
+                } else {
+                    if (type === "video") {
+                        options.url = url.replace("https://", "http://");
+                    }
+                }
+                if (type === "news" || type === "video") {
+                    requestPromise(options).then(response => {
+                        const { body } = response;
+                        if (body) resolve(body);
+                        else throw new Error("get media fails");
+                    });
+                } else {
+                    resolve(url);
+                }
             });
         });
     }
