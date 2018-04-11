@@ -81,11 +81,18 @@ export const getReplyObject = async message => {
         } else if (Content === "10") {
             replyType = "news";
             data = await wechatApi.uploadMaterial("image", "/Users/yzw/Code/wechat-film/resource/favicon.png", {});
-            console.log("data1:", data);
             const picUrl = data.url;
             const media = {
                 articles: [{
-                    title: "tututu",
+                    title: "图文1",
+                    thumb_media_id: data.media_id,
+                    author: "yzw",
+                    digest: "没有摘要",
+                    show_cover_pic: 1,
+                    content: "没有内容",
+                    content_source_url: "https://github.com"
+                }, {
+                    title: "图文2",
                     thumb_media_id: data.media_id,
                     author: "yzw",
                     digest: "没有摘要",
@@ -95,9 +102,7 @@ export const getReplyObject = async message => {
                 }]
             };
             data = await wechatApi.uploadMaterial("news", media, {});
-            console.log("data2:", data);
             data = await wechatApi.getMaterial(data.media_id, "news", {});
-            console.log("data3:", data);
             const newsItems = data.news_item;
             const news = [];
             newsItems.forEach(item => {
@@ -109,6 +114,88 @@ export const getReplyObject = async message => {
                 });
             });
             data = news;
+        } else if (Content === "11") {
+            const counts = await wechatApi.countMaterial();
+            console.log("counts: %s", JSON.stringify(counts));
+            const results = await Promise.all([
+                wechatApi.batchGetMaterial({
+                    type: "image",
+                    offset: 0,
+                    count: 10
+                }),
+                wechatApi.batchGetMaterial({
+                    type: "video",
+                    offset: 0,
+                    count: 10
+                }),
+                wechatApi.batchGetMaterial({
+                    type: "voice",
+                    offset: 0,
+                    count: 10
+                }),
+                wechatApi.batchGetMaterial({
+                    type: "news",
+                    offset: 0,
+                    count: 10
+                })
+            ]);
+            console.log("results: %s", JSON.stringify(results));
+            data = "看服务器～";
+            replyType = "text";
+        } else if (Content === "12") {
+            let results = await Promise.all([
+                wechatApi.batchGetMaterial({
+                    type: "image",
+                    offset: 0,
+                    count: 10
+                }),
+                wechatApi.batchGetMaterial({
+                    type: "video",
+                    offset: 0,
+                    count: 10
+                }),
+                wechatApi.batchGetMaterial({
+                    type: "voice",
+                    offset: 0,
+                    count: 10
+                }),
+                wechatApi.batchGetMaterial({
+                    type: "news",
+                    offset: 0,
+                    count: 10
+                })
+            ]);
+            results.forEach(item => {
+                console.log(item);
+                item.item.forEach(material => {
+                    wechatApi.deleteMaterial(material.media_id);
+                });
+            });
+            results = await Promise.all([
+                wechatApi.batchGetMaterial({
+                    type: "image",
+                    offset: 0,
+                    count: 10
+                }),
+                wechatApi.batchGetMaterial({
+                    type: "video",
+                    offset: 0,
+                    count: 10
+                }),
+                wechatApi.batchGetMaterial({
+                    type: "voice",
+                    offset: 0,
+                    count: 10
+                }),
+                wechatApi.batchGetMaterial({
+                    type: "news",
+                    offset: 0,
+                    count: 10
+                })
+            ]);
+            console.log("results: %s", JSON.stringify(results));
+            data = "删除喽～";
+            replyType = "text";
         }
     }
     Object.assign(options, {
