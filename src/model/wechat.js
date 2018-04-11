@@ -1,6 +1,7 @@
 import { createReadStream } from "fs";
 import request from "request";
 import config from "../config"
+import { type } from "../util/common";
 
 const requestPromise = Promise.promisify(request);
 const { api } = config;
@@ -221,6 +222,153 @@ class Wechat {
                     const { body } = response;
                     if (body) resolve(body);
                     else throw new Error("batch get media fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    createGroup(name) {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.group.create}?access_token=${access_token}`;
+                const form = {
+                    group: {
+                        name
+                    }
+                };
+                requestPromise({
+                    method: "POST",
+                    url,
+                    body: form,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("create group fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    getGroups() {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.group.get}?access_token=${access_token}`;
+                requestPromise({
+                    url,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("get groups fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    getGroupId(openId) {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.group.getId}?access_token=${access_token}`;
+                const form = {
+                    openid: openId
+                };
+                requestPromise({
+                    method: "POST",
+                    url,
+                    body: form,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("get group id fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    updateGroup(id, name) {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.group.update}?access_token=${access_token}`;
+                const form = {
+                    group: {
+                        id,
+                        name
+                    }
+                };
+                requestPromise({
+                    method: "POST",
+                    url,
+                    body: form,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("update group id fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    moveGroup(openId, toGroupId) {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const form = {
+                    to_groupid: toGroupId
+                };
+                let url;
+                if (type(openId) === "Array") {
+                    form.openid_list = openId;
+                    url = `${api.group.batchupdate}?access_token=${access_token}`;
+                } else {
+                    form.openid = openId;
+                    url = `${api.group.move}?access_token=${access_token}`;
+                }
+                requestPromise({
+                    method: "POST",
+                    url,
+                    body: form,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("move group id fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    deleteGroup(id) {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.group.delete}?access_token=${access_token}`;
+                const form = {
+                    group: {
+                        id
+                    }
+                };
+                requestPromise({
+                    method: "POST",
+                    url,
+                    body: form,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("delete group id fails");
                 }).catch(error => {
                     reject(error);
                 });
