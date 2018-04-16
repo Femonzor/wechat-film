@@ -27,6 +27,15 @@ export default {
             update: `${prefix}/material/update_news`,
             count: `${prefix}/material/get_materialcount`,
             batchget: `${prefix}/material/batchget_material`
+        },
+        group: {
+            create: `${prefix}/groups/create`,
+            get: `${prefix}/groups/get`,
+            getId: `${prefix}/groups/getid`,
+            update: `${prefix}/groups/update`,
+            move: `${prefix}/groups/members/update`,
+            batchupdate: `${prefix}/groups/members/batchupdate`,
+            delete: `${prefix}/groups/delete`
         }
     }
 };

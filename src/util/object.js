@@ -196,6 +196,31 @@ export const getReplyObject = async message => {
             console.log("results: %s", JSON.stringify(results));
             data = "删除喽～";
             replyType = "text";
+        } else if (Content === "13") {
+            const group = await wechatApi.createGroup("wechat");
+            console.log("new group:", group);
+            let groups = await wechatApi.getGroups();
+            console.log("get groups:", groups);
+            const myGroup = await wechatApi.getGroupId(message.FromUserName);
+            console.log("my group:", myGroup);
+            let result = await wechatApi.moveGroup(message.FromUserName, 101);
+            console.log("move to groupid: 101,", result);
+            groups = await wechatApi.getGroups();
+            console.log("after move group, get groups:", groups);
+            result = await wechatApi.moveGroup([message.FromUserName], 0);
+            console.log("move to groupid: 0,", result);
+            groups = await wechatApi.getGroups();
+            console.log("after batch move group, get groups:", groups);
+            result = await wechatApi.updateGroup(101, "wechat100");
+            console.log("update group,", result);
+            groups = await wechatApi.getGroups();
+            console.log("after update group, get groups:", groups);
+            result = await wechatApi.deleteGroup(101);
+            console.log("delete group 101", result);
+            groups = await wechatApi.getGroups();
+            console.log("after delete group, get groups:", groups);
+            data = "查询分组";
+            replyType = "text";
         }
     }
     Object.assign(options, {
