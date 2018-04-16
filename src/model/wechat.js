@@ -375,6 +375,61 @@ class Wechat {
             });
         });
     }
+    remarkUser(openId, remark) {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.user.remark}?access_token=${access_token}`;
+                const form = {
+                    openid: openId,
+                    remark
+                };
+                requestPromise({
+                    method: "POST",
+                    url,
+                    body: form,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("remark user fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    getUsers(openId, lang) {
+        lang = lang || "zh_CN";
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const options = {
+                    json: true
+                };
+                if (type(openId) === "Array") {
+                    Object.assign(options, {
+                        body: {
+                            user_list: openId
+                        },
+                        method: "POST",
+                        url: `${api.user.batchget}?access_token=${access_token}`
+                    });
+                } else {
+                    Object.assign(options, {
+                        url: `${api.user.get}?access_token=${access_token}&openid=${openId}&lang=${lang}`
+                    });
+                }
+                requestPromise(options).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("batch get user fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
 }
 
 export default Wechat;

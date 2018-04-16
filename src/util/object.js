@@ -221,6 +221,16 @@ export const getReplyObject = async message => {
             console.log("after delete group, get groups:", groups);
             data = "查询分组";
             replyType = "text";
+        } else if (Content === "14") {
+            const user = await wechatApi.getUsers(message.FromUserName);
+            console.log("get user:", user);
+            const users = await wechatApi.getUsers([{
+                openid: message.FromUserName,
+                lang: "en"
+            }]);
+            console.log("batch get users:", users);
+            data = "获取用户";
+            replyType = "text";
         }
     }
     Object.assign(options, {

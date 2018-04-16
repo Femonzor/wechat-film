@@ -36,6 +36,9 @@ export default {
             move: `${prefix}/groups/members/update`,
             batchupdate: `${prefix}/groups/members/batchupdate`,
             delete: `${prefix}/groups/delete`
+        },
+        user: {
+            remark: `${prefix}/user/info/updateremark`
         }
     }
 };
