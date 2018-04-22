@@ -38,7 +38,10 @@ export default {
             delete: `${prefix}/groups/delete`
         },
         user: {
-            remark: `${prefix}/user/info/updateremark`
+            remark: `${prefix}/user/info/updateremark`,
+            get: `${prefix}/user/info`,
+            batchget: `${prefix}/user/info/batchget`,
+            list: `${prefix}/user/get`
         }
     }
 };

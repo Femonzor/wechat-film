@@ -17,7 +17,10 @@ export const getReplyObject = async message => {
     if (MsgType === "event") {
         const { Event } = message;
         if (Event === "subscribe") {
-            console.log(`扫二维码进来: ${message.EventKey} ${message.Ticket}`);
+            console.log("message:", message);
+            const { EventKey, Ticket } = message;
+            if (Ticket) console.log(`扫二维码进来: ${EventKey} ${Ticket}`);
+            else console.log("关注公众号");
             data = "您好!"
         } else if (Event === "unsubscribe") {
             console.log("取消关注!");
@@ -230,6 +233,11 @@ export const getReplyObject = async message => {
             }]);
             console.log("batch get users:", users);
             data = "获取用户";
+            replyType = "text";
+        } else if (Content === "15") {
+            const userList = await wechatApi.listUsers();
+            console.log(userList);
+            data = `用户列表长度: ${userList.total}`;
             replyType = "text";
         }
     }

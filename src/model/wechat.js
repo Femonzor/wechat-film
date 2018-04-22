@@ -430,6 +430,25 @@ class Wechat {
             });
         });
     }
+    listUsers(openId) {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                let url = `${api.user.list}?access_token=${access_token}`;
+                if (openId) url = `${url}&next_openid=${openId}`;
+                requestPromise({
+                    url,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("list users fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        }); 
+    }
 }
 
 export default Wechat;
