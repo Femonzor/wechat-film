@@ -449,6 +449,172 @@ class Wechat {
             });
         }); 
     }
+    createTag(name) {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.tag.create}?access_token=${access_token}`;
+                const form = {
+                    tag: {
+                        name
+                    }
+                };
+                requestPromise({
+                    method: "POST",
+                    url,
+                    body: form,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("create tag fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    getTags() {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.tag.get}?access_token=${access_token}`;
+                requestPromise({
+                    url,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("get tags fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    updateTag(id, name) {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.tag.update}?access_token=${access_token}`;
+                const form = {
+                    tag: {
+                        id,
+                        name
+                    }
+                };
+                requestPromise({
+                    method: "POST",
+                    url,
+                    body: form,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("update tag fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    deleteTag(id) {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.tag.delete}?access_token=${access_token}`;
+                const form = {
+                    tag: {
+                        id
+                    }
+                };
+                requestPromise({
+                    method: "POST",
+                    url,
+                    body: form,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("delete tag fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    getTagUsers(tagId, openId) {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.tag.tagUsers}?access_token=${access_token}`;
+                const form = {
+                    tagid: tagId
+                };
+                if (openId) form.next_openid = openId;
+                requestPromise({
+                    method: "POST",
+                    url,
+                    body: form,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("get tag users fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    batchTag(openIds, tagId, unTag) {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                let url = `${api.tag.batchtag}?access_token=${access_token}`;
+                if (unTag) url = `${api.tag.batchuntag}?access_token=${access_token}`;
+                const form = {
+                    openid_list: openIds,
+                    tagid: tagId
+                };
+                requestPromise({
+                    method: "POST",
+                    url,
+                    body: form,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("batch tag fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    getUserTags(openId) {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.tag.userTags}?access_token=${access_token}`;
+                const form = {
+                    openid: openId
+                };
+                requestPromise({
+                    method: "POST",
+                    url,
+                    body: form,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("get user tags fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
 }
 
 export default Wechat;

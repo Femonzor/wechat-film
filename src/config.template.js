@@ -37,6 +37,16 @@ export default {
             batchupdate: `${prefix}/groups/members/batchupdate`,
             delete: `${prefix}/groups/delete`
         },
+        tag: {
+            create: `${prefix}/tags/create`,
+            get: `${prefix}/tags/get`,
+            update: `${prefix}/tags/update`,
+            delete: `${prefix}/tags/delete`,
+            tagUsers: `${prefix}/user/tag/get`,
+            batchtag: `${prefix}/tags/members/batchtagging`,
+            batchuntag: `${prefix}/tags/members/batchuntagging`,
+            userTags: `${prefix}/tags/getidlist`
+        },
         user: {
             remark: `${prefix}/user/info/updateremark`,
             get: `${prefix}/user/info`,

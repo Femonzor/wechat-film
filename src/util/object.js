@@ -11,7 +11,7 @@ import config from "../config";
 const wechatApi = new Wechat(config.wechat);
 
 export const getReplyObject = async message => {
-    let data, replyType;
+    let data, replyType, result;
     const options = {};
     const { MsgType } = message;
     if (MsgType === "event") {
@@ -206,7 +206,7 @@ export const getReplyObject = async message => {
             console.log("get groups:", groups);
             const myGroup = await wechatApi.getGroupId(message.FromUserName);
             console.log("my group:", myGroup);
-            let result = await wechatApi.moveGroup(message.FromUserName, 101);
+            result = await wechatApi.moveGroup(message.FromUserName, 101);
             console.log("move to groupid: 101,", result);
             groups = await wechatApi.getGroups();
             console.log("after move group, get groups:", groups);
@@ -238,6 +238,32 @@ export const getReplyObject = async message => {
             const userList = await wechatApi.listUsers();
             console.log(userList);
             data = `用户列表长度: ${userList.total}`;
+            replyType = "text";
+        } else if (Content === "16") {
+            let tag = await wechatApi.createTag("fans1");
+            console.log("new tag:", tag);
+            const tags = await wechatApi.getTags();
+            console.log("tags:", tags);
+            result = await wechatApi.updateTag(tag.tag.id, "newfans1");
+            console.log("update tag:", result);
+            result = await wechatApi.deleteTag(tag.tag.id);
+            console.log("delete tag:", result);
+            tag = await wechatApi.createTag("粉丝1");
+            const userList = await wechatApi.listUsers();
+            console.log("new tag:", tag);
+            result = await wechatApi.batchTag(userList.data.openid, tag.tag.id);
+            console.log("batch tag:", result);
+            let tagUsers = await wechatApi.getTagUsers(tag.tag.id);
+            console.log("tagUsers:", tagUsers);
+            let userTags = await wechatApi.getUserTags(message.FromUserName);
+            console.log("userTags:", userTags);
+            result = await wechatApi.batchTag(userList.data.openid, tag.tag.id, true);
+            console.log("batch untag:", result);
+            tagUsers = await wechatApi.getTagUsers(tag.tag.id);
+            console.log("tagUsers:", tagUsers);
+            userTags = await wechatApi.getUserTags(message.FromUserName);
+            console.log("userTags:", userTags);
+            data = "查询标签";
             replyType = "text";
         }
     }
