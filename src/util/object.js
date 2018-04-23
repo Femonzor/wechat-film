@@ -265,6 +265,18 @@ export const getReplyObject = async message => {
             console.log("userTags:", userTags);
             data = "查询标签";
             replyType = "text";
+        } else if (Content === "17") {
+            const mpnews = {
+                media_id: "LqHt_PvUN2rjqDqMAkg3TtEyMBB-tekrEZCzuYycMmI"
+            };
+            const text = {
+                content: "群发文本"
+            };
+            const msgData = await wechatApi.sendByTag("mpnews", mpnews, 116);
+            // const msgData = await wechatApi.sendByTag("text", text, 116);
+            console.log("msgData:", msgData);
+            data = "群发";
+            replyType = "text";
         }
     }
     Object.assign(options, {

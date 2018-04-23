@@ -615,6 +615,39 @@ class Wechat {
             });
         });
     }
+    sendByTag(type, message, tagId) {
+        const msg = {
+            filter: {},
+            msgtype: type
+        };
+        if (!tagId) {
+            msg.filter.is_to_all = true;
+        } else {
+            Object.assign(msg.filter, {
+                is_to_all: false,
+                tag_id: tagId
+            }); 
+        }
+        msg[type] = message;
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = data;
+                const url = `${api.mass.tag}?access_token=${access_token}`;
+                requestPromise({
+                    method: "POST",
+                    url,
+                    body: msg,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("send to tag fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
 }
 
 export default Wechat;

@@ -52,6 +52,9 @@ export default {
             get: `${prefix}/user/info`,
             batchget: `${prefix}/user/info/batchget`,
             list: `${prefix}/user/get`
+        },
+        mass: {
+            tag: `${prefix}/message/mass/sendall`
         }
     }
 };
