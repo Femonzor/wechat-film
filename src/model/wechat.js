@@ -648,6 +648,80 @@ class Wechat {
             });
         });
     }
+    createMenu(menu) {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.menu.create}?access_token=${access_token}`;
+                requestPromise({
+                    method: "POST",
+                    url,
+                    body: menu,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("create menu fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    getMenu() {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.menu.get}?access_token=${access_token}`;
+                requestPromise({
+                    url,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("get menu fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    deleteMenu() {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.menu.delete}?access_token=${access_token}`;
+                requestPromise({
+                    url,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("delete menu fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
+    getCurrentMenu() {
+        return new Promise((resolve, reject) => {
+            this.fetchAccessToken().then(data => {
+                const { access_token } = this;
+                const url = `${api.menu.current}?access_token=${access_token}`;
+                requestPromise({
+                    url,
+                    json: true
+                }).then(response => {
+                    const { body } = response;
+                    if (body) resolve(body);
+                    else throw new Error("get current menu fails");
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        });
+    }
 }
 
 export default Wechat;

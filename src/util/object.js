@@ -6,9 +6,13 @@ import ReplyVoiceMessage from "../model/message/reply/voiceMessage";
 import ReplyMusicMessage from "../model/message/reply/musicMessage";
 import { type } from "./common";
 import Wechat from "../model/wechat";
+import menu from "../constant/menu";
 import config from "../config";
 
 const wechatApi = new Wechat(config.wechat);
+
+await wechatApi.deleteMenu();
+const menuResult = await wechatApi.createMenu(menu);
 
 export const getReplyObject = async message => {
     let data, replyType, result;
@@ -33,6 +37,10 @@ export const getReplyObject = async message => {
             data = "又扫了下二维码～";
         } else if (Event === "VIEW") {
             data = `您点击了菜单中的链接: ${message.EventKey}`;
+        } else if (Event === "scancode_push") {
+            data = `您点击了菜单中: ${message.EventKey}`;
+        } else if (Event === "scancode_waitmsg") {
+            data = `您点击了菜单中: ${message.EventKey}`;
         }
         replyType = "text";
     } else if (MsgType === "text") {

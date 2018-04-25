@@ -54,7 +54,17 @@ export default {
             list: `${prefix}/user/get`
         },
         mass: {
-            tag: `${prefix}/message/mass/sendall`
+            tag: `${prefix}/message/mass/sendall`,
+            openIds: `${prefix}/message/mass/send`,
+            delete: `${prefix}/message/mass/delete`,
+            preview: `${prefix}/message/mass/preview`,
+            check: `${prefix}/message/mass/get`
+        },
+        menu: {
+            create: `${prefix}/menu/create`,
+            get: `${prefix}/menu/get`,
+            delete: `${prefix}/menu/delete`,
+            current: `${prefix}/get_current_selfmenu_info`
         }
     }
 };
