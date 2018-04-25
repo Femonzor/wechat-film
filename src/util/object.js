@@ -41,9 +41,6 @@ export const getReplyObject = async message => {
             replyType = "text";
             data = "大米";
         } else if (Content === "2") {
-            replyType = "text";
-            data = "豆腐";
-        } else if (Content === "3") {
             replyType = "news";
             data = [{
                 Title: "naruto",
@@ -56,15 +53,18 @@ export const getReplyObject = async message => {
                 PicUrl: "https://femonzor.com/resource/images/koala.jpg",
                 Url: "https://femonzor.com/resource/images/koala.jpg"
             }]
-        } else if (Content === "4") {
+        } else if (Content === "3") {
             replyType = "image";
             data = await wechatApi.uploadMaterial("image", "/Users/yzw/Code/wechat-film/resource/favicon.png");
-        } else if (Content === "5") {
+        } else if (Content === "4") {
             replyType = "video";
             data = await wechatApi.uploadMaterial("video", "/Users/yzw/Code/wechat-film/resource/video.mp4");
-        } else if (Content === "6") {
+        } else if (Content === "5") {
             replyType = "voice";
             data = await wechatApi.uploadMaterial("voice", "/Users/yzw/Code/wechat-film/resource/voice.mp3");
+        } else if (Content === "6") {
+            replyType = "voice";
+            data = await wechatApi.uploadMaterial("voice", "/Users/yzw/Code/wechat-film/resource/voice.mp3", {});
         } else if (Content === "7") {
             replyType = "music";
             data = await wechatApi.uploadMaterial("thumb", "/Users/yzw/Code/wechat-film/resource/thumb.jpg");
@@ -266,14 +266,23 @@ export const getReplyObject = async message => {
             data = "查询标签";
             replyType = "text";
         } else if (Content === "17") {
-            const mpnews = {
-                media_id: "LqHt_PvUN2rjqDqMAkg3TtEyMBB-tekrEZCzuYycMmI"
+            // 测试号不能群发图文了
+            // const mpnews = {
+            //     media_id: "LqHt_PvUN2rjqDqMAkg3Tv5xk1mnqcOY1c8YkdMgJ3A"
+            // };
+            // const text = {
+            //     content: "群发文本"
+            // };
+            // const voice = {
+            //     media_id: "LqHt_PvUN2rjqDqMAkg3TrkvAA0Vd3Su_kQ_wrFjVng"
+            // };
+            const image = {
+                media_id: "LqHt_PvUN2rjqDqMAkg3Tqmwhp61KT85Bm4Uuo7unpE"
             };
-            const text = {
-                content: "群发文本"
-            };
-            const msgData = await wechatApi.sendByTag("mpnews", mpnews, 116);
+            // const msgData = await wechatApi.sendByTag("mpnews", mpnews, 116);
             // const msgData = await wechatApi.sendByTag("text", text, 116);
+            // const msgData = await wechatApi.sendByTag("voice", voice, 116);
+            const msgData = await wechatApi.sendByTag("image", image, 116);
             console.log("msgData:", msgData);
             data = "群发";
             replyType = "text";
