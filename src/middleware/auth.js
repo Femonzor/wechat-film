@@ -15,14 +15,18 @@ export default options => {
         const sha = sha1(str);
         const { method } = context;
         if (method === "GET") {
+            console.log("get request");
             if (sha === signature) {
                 context.body = echostr + "";
                 console.log("success");
             } else {
+                console.log("get wrong");
                 context.body = "wrong";
             }
         } else if (method === "POST") {
+            console.log("post request");
             if (sha !== signature) {
+                console.log("post wrong");
                 context.body = "wrong";
                 return false;
             }

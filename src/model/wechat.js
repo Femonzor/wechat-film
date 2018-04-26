@@ -724,6 +724,42 @@ class Wechat {
             });
         });
     }
+    fetchTicket(access_token) {
+        this.getTicket().then(data => {
+            try {
+                data = JSON.parse(data);
+                if (this.isValidTicket(data)) {
+                    return Promise.resolve(data);
+                } else {
+                    return this.updateTicket(access_token);
+                }
+            } catch (error) {
+                return this.updateTicket(access_token);
+            }
+        }).then(data => {
+            this.saveTicket(data);
+            return Promise.resolve(data);
+        });
+    }
+    updateTicket(access_token) {
+        const url = `${api.ticket.get}?access_token=${access_token}&type=jsapi`;
+        return new Promise((resolve, reject) => {
+            requestPromise({ url: url, json: true }).then(response => {
+                const { body } = response;
+                const now = new Date().getTime();
+                body.expires_in = now + (body.expires_in - 20) * 1000;
+                resolve(body);
+            }).catch(error => {
+                reject(error);
+            });
+        });
+    }
+    isValidTicket(data) {
+        if (!data || !data.ticket || !data.expires_in) return false;
+        const { ticket, expires_in } = data;
+        const now = new Date().getTime();
+        return now < expires_in ? true : false;
+    }
 }
 
 export default Wechat;

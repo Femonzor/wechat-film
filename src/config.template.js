@@ -65,6 +65,9 @@ export default {
             get: `${prefix}/menu/get`,
             delete: `${prefix}/menu/delete`,
             current: `${prefix}/get_current_selfmenu_info`
+        },
+        ticket: {
+            get: `${prefix}/ticket/getticket`
         }
     }
 };
