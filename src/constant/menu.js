@@ -22,28 +22,20 @@ export default {
             type: "pic_sysphoto",
             key: "pic_photo"
         }, {
-            name: "弹出拍照或者相册",
+            name: "弹出照相",
             type: "pic_photo_or_album",
             key: "pic_photo_album"
         }]
     }, {
-        name: "点出菜单2",
+        name: "点击菜单2",
         sub_button: [{
             name: "微信相册发图",
             type: "pic_weixin",
-            url: "pic_weixin"
+            key: "pic_weixin"
         }, {
             name: "地理位置选择",
             type: "location_select",
-            url: "location_select"
-        }, {
-            name: "下发图片消息",
-            type: "media_id",
-            media_id: ""
-        }, {
-            name: "跳转图文消息URL",
-            type: "view_limited",
-            media_id: ""
+            key: "location_select"
         }]
     }]
 };

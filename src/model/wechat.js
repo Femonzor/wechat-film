@@ -651,6 +651,7 @@ class Wechat {
     createMenu(menu) {
         return new Promise((resolve, reject) => {
             this.fetchAccessToken().then(data => {
+                console.log("to create menu");
                 const { access_token } = this;
                 const url = `${api.menu.create}?access_token=${access_token}`;
                 requestPromise({
@@ -688,6 +689,7 @@ class Wechat {
     }
     deleteMenu() {
         return new Promise((resolve, reject) => {
+            console.log("to delete menu");
             this.fetchAccessToken().then(data => {
                 const { access_token } = this;
                 const url = `${api.menu.delete}?access_token=${access_token}`;

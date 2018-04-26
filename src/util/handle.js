@@ -7,9 +7,9 @@ import { getReplyObject } from "./object";
  */
 export const reply = async (context, message) => {
     const obj = await getReplyObject(message);
-    const xml = obj.toXML();
-    console.log(xml);
     if (obj) {
+        const xml = obj.toXML();
+        console.log(`xml: ${xml}`);
         Object.assign(context, {
             status: 200,
             type: "application/xml",

@@ -11,17 +11,15 @@ import config from "../config";
 
 const wechatApi = new Wechat(config.wechat);
 
-await wechatApi.deleteMenu();
-const menuResult = await wechatApi.createMenu(menu);
-
 export const getReplyObject = async message => {
     let data, replyType, result;
     const options = {};
     const { MsgType } = message;
+    console.log(`message: ${JSON.stringify(message)}`);
     if (MsgType === "event") {
         const { Event } = message;
+        console.log(`Event: ${Event}`);
         if (Event === "subscribe") {
-            console.log("message:", message);
             const { EventKey, Ticket } = message;
             if (Ticket) console.log(`扫二维码进来: ${EventKey} ${Ticket}`);
             else console.log("关注公众号");
@@ -38,8 +36,31 @@ export const getReplyObject = async message => {
         } else if (Event === "VIEW") {
             data = `您点击了菜单中的链接: ${message.EventKey}`;
         } else if (Event === "scancode_push") {
+            console.log(`message.ScanCodeInfo.ScanType: ${message.ScanCodeInfo.ScanType}`);
+            console.log(`message.ScanCodeInfo.ScanResult: ${message.ScanCodeInfo.ScanResult}`);
             data = `您点击了菜单中: ${message.EventKey}`;
         } else if (Event === "scancode_waitmsg") {
+            console.log(`message.ScanCodeInfo.ScanType: ${message.ScanCodeInfo.ScanType}`);
+            console.log(`message.ScanCodeInfo.ScanResult: ${message.ScanCodeInfo.ScanResult}`);
+            data = `您点击了菜单中: ${message.EventKey}`;
+        } else if (Event === "pic_sysphoto") {
+            console.log(`message.SendPicsInfo.PicList: ${message.SendPicsInfo.PicList}`);
+            console.log(`message.SendPicsInfo.Count: ${message.SendPicsInfo.Count}`);
+            data = `您点击了菜单中: ${message.EventKey}`;
+        } else if (Event === "pic_photo_or_album") {
+            console.log(`message.SendPicsInfo.PicList: ${message.SendPicsInfo.PicList}`);
+            console.log(`message.SendPicsInfo.Count: ${message.SendPicsInfo.Count}`);
+            data = `您点击了菜单中: ${message.EventKey}`;
+        } else if (Event === "pic_weixin") {
+            console.log(`message.SendPicsInfo.PicList: ${message.SendPicsInfo.PicList}`);
+            console.log(`message.SendPicsInfo.Count: ${message.SendPicsInfo.Count}`);
+            data = `您点击了菜单中: ${message.EventKey}`;
+        } else if (Event === "location_select") {
+            console.log(`message.SendLocationInfo.Location_X: ${message.SendLocationInfo.Location_X}`);
+            console.log(`message.SendLocationInfo.Location_Y: ${message.SendLocationInfo.Location_Y}`);
+            console.log(`message.SendLocationInfo.Scale: ${message.SendLocationInfo.Scale}`);
+            console.log(`message.SendLocationInfo.Label: ${message.SendLocationInfo.Label}`);
+            console.log(`message.SendLocationInfo.Poiname: ${message.SendLocationInfo.Poiname}`);
             data = `您点击了菜单中: ${message.EventKey}`;
         }
         replyType = "text";
@@ -294,7 +315,17 @@ export const getReplyObject = async message => {
             console.log("msgData:", msgData);
             data = "群发";
             replyType = "text";
+        } else if (Content === "18") {
+            console.log(`menu: ${menu}`);
+            await wechatApi.deleteMenu();
+            const menuResult = await wechatApi.createMenu(menu);
+            console.log(`menuResult: ${JSON.stringify(menuResult)}`);
+            data = "菜单";
+            replyType = "text";
         }
+    } else if (MsgType === "image") {
+        data = "1";
+        replyType = "text";
     }
     Object.assign(options, {
         ToUserName: message.FromUserName,
