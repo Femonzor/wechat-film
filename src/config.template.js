@@ -2,6 +2,7 @@ import { join } from "path";
 import { readFileAsync, writeFileAsync } from "./util/file";
 
 const tokenFile = join(__dirname, "token.txt");
+const ticketFile = join(__dirname, "ticket.txt");
 const prefix = "https://api.weixin.qq.com/cgi-bin";
 
 export default {
@@ -10,7 +11,9 @@ export default {
         appSecret: "cc11b92b483f477267a1618d6e8b1872",
         token: "ftxbtfj9j6nrippoqkl0v781",
         getAccessToken: () => readFileAsync(tokenFile),
-        saveAccessToken: (content) => writeFileAsync(tokenFile, content)
+        saveAccessToken: (content) => writeFileAsync(tokenFile, content),
+        getTicket: () => readFileAsync(ticketFile),
+        saveTicket: (content) => writeFileAsync(ticketFile, content)
     },
     api: {
         accessToken: `${prefix}/token?grant_type=client_credential`,

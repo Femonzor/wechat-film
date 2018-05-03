@@ -5,7 +5,7 @@ export const readFileAsync = (filePath, encoding) => new Promise((resolve, rejec
     encoding = encoding || "utf8";
     readFile(filePath, encoding, (error, content) => {
         if (error) {
-            console.log("readFile error: %s", error);
+            // console.log("readFile error: %s", error);
             reject(error);
         } else {
             // console.log("readFile content: %s", content);

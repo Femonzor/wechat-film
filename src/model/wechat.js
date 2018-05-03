@@ -39,7 +39,7 @@ class Wechat {
             // console.log("isValid");
             return Promise.resolve(this);
         }
-        this.getAccessToken().then(data => {
+        return this.getAccessToken().then(data => {
             try {
                 // console.log("token: %s", data);
                 data = JSON.parse(data);
@@ -725,7 +725,7 @@ class Wechat {
         });
     }
     fetchTicket(access_token) {
-        this.getTicket().then(data => {
+        return this.getTicket().then(data => {
             try {
                 data = JSON.parse(data);
                 if (this.isValidTicket(data)) {

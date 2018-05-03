@@ -8,6 +8,7 @@ import { reply } from "../util/handle";
 
 export default options => {
     const accessToken = new Wechat(options);
+    // console.log("accessToken:", accessToken);
     return async context => {
         const { token } = options;
         const { signature, nonce, timestamp, echostr } = context.query;
