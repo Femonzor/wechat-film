@@ -737,7 +737,7 @@ class Wechat {
                 return this.updateTicket(access_token);
             }
         }).then(data => {
-            this.saveTicket(data);
+            this.saveTicket(JSON.stringify(data));
             return Promise.resolve(data);
         });
     }

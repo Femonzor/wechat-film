@@ -19,8 +19,8 @@ const template = `
     <h1>点击标题，开始录音翻译</h1>
     <p id="title"></p>
     <div id="poster"></div>
-    <script src="https://zeptojs.com/zepto.min.js"></script>
-    <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script src="http://zeptojs.com/zepto.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
     <script>
         wx.config({
             debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -92,6 +92,7 @@ const getSign = (ticket, url) => {
     const noncestr = createNonce();
     const timestamp = createTimestamp();
     const signature = sign(noncestr, ticket, timestamp, url);
+    console.log("ticket: %s, url: %s", ticket, url);
     return {
         noncestr,
         timestamp,
