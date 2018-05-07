@@ -76,7 +76,12 @@ const template = `
                 }
             });
             var shareContent = {};
+            wx.onMenuShareAppMessage(shareContent);
+            var slides;
             var isRecording = false;
+            $("#poster").on("click", function () {
+                wx.previewImage(slides);
+            });
             $("h1").on("click", function () {
                 if (!isRecording) {
                     isRecording = true;
@@ -122,6 +127,14 @@ const template = `
                                                 alert("分享失败");
                                             }
                                         };
+                                        slides = {
+                                            current: subject.images.large,
+                                            urls: [subject.images.large]
+                                        };
+                                        data.subjects.forEach(function (item) {
+                                            slides.urls.push(item.images.large);
+                                        });
+                                        wx.previewImage(slides);
                                         wx.onMenuShareAppMessage(shareContent);
                                     }
                                 });
