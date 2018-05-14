@@ -1,0 +1,20 @@
+{{extend "../layout"}}
+{{block "content"}}
+    <div class="container">
+        <div class="row">
+            {{each movies}}
+                <div class="col-md-2">
+                    <div class="thumbnail">
+                        <a href="/movie/{{$id}}">
+                            <img src="{{$poster}}" alt="{{$title}}">
+                        </a>
+                        <div class="caption">
+                            <h3>{{$title}}</h3>
+                            <a href="/movie/{{$id}}" class="btn btn-primary" role="button">观看预告片</a>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+{{/block}}
