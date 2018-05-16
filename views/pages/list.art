@@ -9,7 +9,7 @@
                         <th>导演</th>
                         <th>国家</th>
                         <th>上映年份</th>
-                        <!-- <th>录入时间</th> -->
+                        <th>录入时间</th>
                         <th>查看</th>
                         <th>更新</th>
                         <th>删除</th>
@@ -22,7 +22,7 @@
                             <td>{{movie.director}}</td>
                             <td>{{movie.country}}</td>
                             <td>{{movie.year}}</td>
-                            <!-- <td>mount</td> -->
+                            <td>{{moment(movie.meta.createAt).format("YYYY-MM-DD")}}</td>
                             <td>
                                 <a target="_blank" href="/movie/{{movie.id}}">查看</a>
                             </td>
