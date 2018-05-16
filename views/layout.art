@@ -10,5 +10,6 @@
 <body>
     {{include "./includes/header"}}
     {{block "content"}}{{/block}}
+    {{block "script"}}{{/block}}
 </body>
 </html>
