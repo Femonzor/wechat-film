@@ -45,6 +45,7 @@ app.get("/admin/movie", (request, response) => {
     response.render("pages/admin", {
         title: "imooc管理页",
         movie: {
+            _id: "",
             title: "",
             director: "",
             country: "",
