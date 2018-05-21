@@ -19,7 +19,8 @@ gulp.task("node", () => {
 gulp.task("server", ["node"], () => {
     const files = [
         "models/**/*.js",
-        "schemas/**/*.js"
+        "schemas/**/*.js",
+        "src/app2.js"
     ];
     const staticFiles = [
         "public/**/*.*",
@@ -29,7 +30,7 @@ gulp.task("server", ["node"], () => {
         proxy: "http://localhost:9998",
         notify: false,
         port: 9997,
-        reloadDelay: 1000
+        reloadDelay: 1500
     });
     gulp.watch(staticFiles).on("change", browserSync.reload);
 });

@@ -4,6 +4,7 @@ import expressArtTemplate from "express-art-template";
 import mongoose from "mongoose";
 import moment from "moment";
 import Movie from "../models/movie";
+import User from "../models/user";
 
 const port = process.env.PORT || 9998;
 const app = new express();
@@ -115,4 +116,31 @@ app.delete("/admin/list", (request, response) => {
             }
         });
     }
+});
+
+app.post("/user/signup", (request, response) => {
+    const userData = request.body.user;
+    const user = new User(userData);
+    User.find({ name: userData.name }, (error, user) => {
+        if (error) console.log(error);
+        if (user) {
+            return response.redirect("/");
+        } else {
+            user.save((error, user) => {
+                if (error) console.log(error);
+                console.log(user);
+                response.redirect("/admin/userlist");
+            });
+        }
+    });
+});
+
+app.get("/admin/userlist", (request, response) => {
+    User.fetch((error, users) => {
+        if (error) console.log(error);
+        response.render("pages/userlist", {
+            title: "用户列表页",
+            users
+        });
+    });
 });
