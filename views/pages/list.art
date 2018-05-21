@@ -16,7 +16,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{each movies as movie}}
+                    {{each movies movie}}
                         <tr class="item-id-{{movie.id}}">
                             <td>{{movie.title}}</td>
                             <td>{{movie.director}}</td>

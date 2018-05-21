@@ -21,6 +21,15 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
+UserSchema.methods = {
+    comparePassword: function (password, callback) {
+        bcrypt.compare(password, this.password, (error, isMatch) => {
+            if (error) return callback(error);
+            callback(null, isMatch);
+        });
+    }
+};
+
 UserSchema.pre("save", function (next) {
     if (this.isNew) {
         this.meta.createAt = this.meta.updateAt = Date.now();

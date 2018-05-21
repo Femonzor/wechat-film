@@ -3,19 +3,30 @@ import bodyParser from "body-parser";
 import expressArtTemplate from "express-art-template";
 import mongoose from "mongoose";
 import moment from "moment";
+import connectMongo from "connect-mongo";
+import session from "express-session";
 import Movie from "../models/movie";
 import User from "../models/user";
 
 const port = process.env.PORT || 9998;
 const app = new express();
-
-mongoose.connect("mongodb://localhost:27017/film");
+const mongoStore = connectMongo(session);
+const dbUrl = "mongodb://localhost:27017/film";
+mongoose.connect(dbUrl);
 
 app.set("views", "views");
 app.engine("art", expressArtTemplate);
 app.set("view engine", "art");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(session({
+    secret: "film",
+    resave: false,
+    saveUninitialized: true,
+    store: new mongoStore({
+        url: dbUrl
+    })
+}));
 app.use(express.static("public"));
 app.locals.moment = moment;
 app.listen(port);
@@ -23,6 +34,7 @@ app.listen(port);
 console.log(`site started on port ${port}`);
 
 app.get("/", (request, response) => {
+    console.log(request.session.user);
     Movie.fetch((error, movies) => {
         if (error) console.log(error);
         response.render("pages/index", {
@@ -121,17 +133,14 @@ app.delete("/admin/list", (request, response) => {
 app.post("/user/signup", (request, response) => {
     const userData = request.body.user;
     const user = new User(userData);
-    User.find({ name: userData.name }, (error, user) => {
+    User.findOne({ name: userData.name }, (error, user) => {
         if (error) console.log(error);
-        if (user) {
-            return response.redirect("/");
-        } else {
-            user.save((error, user) => {
-                if (error) console.log(error);
-                console.log(user);
-                response.redirect("/admin/userlist");
-            });
-        }
+        if (user) return response.redirect("/");
+        user.save((error, user) => {
+            if (error) console.log(error);
+            console.log(user);
+            response.redirect("/admin/userlist");
+        });
     });
 });
 
@@ -141,6 +150,25 @@ app.get("/admin/userlist", (request, response) => {
         response.render("pages/userlist", {
             title: "用户列表页",
             users
+        });
+    });
+});
+
+app.post("/user/signin", (request, response) => {
+    const userData = request.body.user;
+    const { name, password } = userData;
+    User.findOne({ name }, (error, user) => {
+        if (error) console.log(error);
+        if (!user) {
+            return response.redirect("/");
+        }
+        user.comparePassword(password, (error, isMatch) => {
+            if (error) console.log(error);
+            if (isMatch) {
+                request.session.user = user;
+                return response.redirect("/");
+            }
+            console.log("Password is not matched");
         });
     });
 });
