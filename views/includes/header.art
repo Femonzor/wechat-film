@@ -11,11 +11,19 @@
         <div class="navbar-header">
             <a href="/" class="navbar-brand">重度科幻迷</a>
         </div>
+        {{if user}}
+        <div class="navbar-text">
+            <span>欢迎您, {{user.name}}</span>
+            <span>&nbsp;|&nbsp;</span>
+            <a href="/logout" class="navbar-link">登出</a>
+        </div>
+        {{else}}
         <div class="navbar-text">
             <a href="#" class="navbar-link" data-toggle="modal" data-target="#signupModal">注册</a>
             <span>&nbsp;|&nbsp;</span>
             <a href="#" class="navbar-link" data-toggle="modal" data-target="#signinModal">登录</a>
         </div>
+        {{/if}}
     </div>
 </nav>
 <div id="signupModal" class="modal fade">

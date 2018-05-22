@@ -33,14 +33,19 @@ app.listen(port);
 
 console.log(`site started on port ${port}`);
 
+app.use((request, response, next) => {
+    const user = request.session.user;
+    if (user) app.locals.user = user;
+    return next();
+});
+
 app.get("/", (request, response) => {
-    console.log(request.session.user);
     Movie.fetch((error, movies) => {
         if (error) console.log(error);
         response.render("pages/index", {
             title: "电影首页",
             movies
-        })
+        });
     });
 });
 
@@ -171,4 +176,10 @@ app.post("/user/signin", (request, response) => {
             console.log("Password is not matched");
         });
     });
+});
+
+app.get("/logout", (request, response) => {
+    delete request.session.user;
+    delete app.locals.user;
+    response.redirect("/");
 });
