@@ -12,14 +12,14 @@ export default app => {
     app.get("/", IndexController.index);
 
     app.get("/movie/:id", MovieController.detail);
-    app.get("/admin/new", MovieController.create);
-    app.get("/admin/update/:id", MovieController.update);
-    app.post("/admin/movie", MovieController.save);
-    app.get("/admin/list", MovieController.list);
-    app.delete("/admin/list", MovieController.del);
+    app.get("/admin/movie/new", UserController.signinRequired, UserController.adminRequired, MovieController.create);
+    app.get("/admin/movie/update/:id", UserController.signinRequired, UserController.adminRequired, MovieController.update);
+    app.post("/admin/movie", UserController.signinRequired, UserController.adminRequired, MovieController.save);
+    app.get("/admin/movie/list", UserController.signinRequired, UserController.adminRequired, MovieController.list);
+    app.delete("/admin/movie/list", UserController.signinRequired, UserController.adminRequired, MovieController.del);
 
     app.post("/user/signup", UserController.signup);
-    app.get("/admin/userlist", UserController.list);
+    app.get("/admin/user/list", UserController.signinRequired, UserController.adminRequired, UserController.list);
     app.post("/user/signin", UserController.signin);
     app.get("/signin", UserController.showSignin);
     app.get("/signup", UserController.showSignup);

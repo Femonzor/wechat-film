@@ -61,11 +61,25 @@ const showSignup = (request, response) => {
     });
 };
 
+const signinRequired = (request, response, next) => {
+    const user = request.session.user;
+    if (!user) return response.redirect("/signin");
+    next();
+};
+
+const adminRequired = (request, response, next) => {
+    const user = request.session.user;
+    if (user.role <= 10) return response.redirect("/signin");
+    next();
+};
+
 export default {
     signup,
     list,
     signin,
     logout,
     showSignin,
-    showSignup
+    showSignup,
+    signinRequired,
+    adminRequired
 };
