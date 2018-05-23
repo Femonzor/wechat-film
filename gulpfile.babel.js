@@ -24,7 +24,7 @@ gulp.task("server", ["node"], () => {
     ];
     const staticFiles = [
         "public/**/*.*",
-        "views/**/*.art"
+        "app/views/**/*.art"
     ];
     browserSync.init(files, {
         proxy: "http://localhost:9998",

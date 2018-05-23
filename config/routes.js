@@ -21,5 +21,7 @@ export default app => {
     app.post("/user/signup", UserController.signup);
     app.get("/admin/userlist", UserController.list);
     app.post("/user/signin", UserController.signin);
+    app.get("/signin", UserController.showSignin);
+    app.get("/signup", UserController.showSignup);
     app.get("/logout", UserController.logout);    
 };

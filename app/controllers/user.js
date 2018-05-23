@@ -1,15 +1,15 @@
 import User from "../models/user";
 
 const signup = (request, response) => {
-    userData = request.body.user;
+    const userData = request.body.user;
     const user = new User(userData);
     User.findOne({ name: userData.name }, (error, user) => {
         if (error) console.log(error);
-        if (user) return response.redirect("/");
+        if (user) return response.redirect("/signin");
         user.save((error, user) => {
             if (error) console.log(error);
             console.log(user);
-            response.redirect("/admin/userlist");
+            response.redirect("/");
         });
     });
 };
@@ -30,15 +30,16 @@ const signin = (request, response) => {
     User.findOne({ name }, (error, user) => {
         if (error) console.log(error);
         if (!user) {
-            return response.redirect("/");
+            return response.redirect("/signup");
         }
         user.comparePassword(password, (error, isMatch) => {
             if (error) console.log(error);
             if (isMatch) {
                 request.session.user = user;
                 return response.redirect("/");
+            } else {
+                return response.redirect("/signin");
             }
-            console.log("Password is not matched");
         });
     });
 };
@@ -48,9 +49,23 @@ const logout = (request, response) => {
     response.redirect("/");
 };
 
+const showSignin = (request, response) => {
+    response.render("pages/signin", {
+        title: "登录页面",
+    });
+};
+
+const showSignup = (request, response) => {
+    response.render("pages/signup", {
+        title: "注册页面",
+    });
+};
+
 export default {
     signup,
     list,
     signin,
-    logout
+    logout,
+    showSignin,
+    showSignup
 };
