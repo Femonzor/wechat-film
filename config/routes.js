@@ -1,6 +1,7 @@
 import IndexController from "../app/controllers/index";
 import UserController from "../app/controllers/user";
 import MovieController from "../app/controllers/movie";
+import CommentController from "../app/controllers/comment";
 
 export default app => {
     app.use((request, response, next) => {
@@ -23,5 +24,7 @@ export default app => {
     app.post("/user/signin", UserController.signin);
     app.get("/signin", UserController.showSignin);
     app.get("/signup", UserController.showSignup);
-    app.get("/logout", UserController.logout);    
+    app.get("/logout", UserController.logout);
+
+    app.post("/user/comment", UserController.signinRequired, CommentController.save);
 };

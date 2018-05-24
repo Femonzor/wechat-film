@@ -1,11 +1,18 @@
 import Movie from "../models/movie";
+import Comment from "../models/comment";
 
 const detail = (request, response) => {
     const id = request.params.id;
     Movie.findById(id, (error, movie) => {
-        response.render("pages/detail", {
-            title: movie.title,
-            movie
+        Comment
+        .find({movie: id})
+        .populate("from", "name")
+        .exec((error, comments) => {
+            response.render("pages/detail", {
+                title: movie.title,
+                movie,
+                comments
+            });
         });
     });
 };
