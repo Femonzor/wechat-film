@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import expressArtTemplate from "express-art-template";
+import expressHandlebars from "express-handlebars";
 import mongoose from "mongoose";
 import moment from "moment";
 import connectMongo from "connect-mongo";
@@ -16,8 +16,25 @@ const dbUrl = "mongodb://localhost:27017/film";
 mongoose.connect(dbUrl);
 
 app.set("views", "app/views");
-app.engine("art", expressArtTemplate);
-app.set("view engine", "art");
+app.engine("handlebars", expressHandlebars({
+    layoutsDir: app.get("views") + "/layouts",
+    defaultLayout: "layout",
+    // can be array
+    partialsDir: app.get("views") + "/partials",
+    helpers: {
+        block: function (name) {
+            var blocks = this._blocks,
+                content = blocks && blocks[name];
+            return content ? content.join("\n") : null;
+        },
+        contentFor: function (name, options) {
+            var blocks = this._blocks || (this._blocks = {}),
+                block = blocks[name] || (blocks[name] = []);
+            block.push(options.fn(this));
+        }
+    }
+}));
+app.set("view engine", "handlebars");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({
