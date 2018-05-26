@@ -6,7 +6,7 @@ const ObjectId = Schema.Types.ObjectId;
 const CommentSchema = new Schema({
     movie: { type: ObjectId, ref: "Movie" },
     from: { type: ObjectId, ref: "User" },
-    to: { type: ObjectId, ref: "User" },
+    reply: {type: Array, "default": [1, 2, 3]},
     content: String,
     meta: {
         createAt: {
