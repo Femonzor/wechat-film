@@ -7,7 +7,9 @@ const detail = (request, response) => {
         Comment
         .find({movie: id})
         .populate("from", "name")
+        .populate("replys.from replys.to", "name")
         .exec((error, comments) => {
+            if (comments[0].replys.length) console.log(comments[0].replys[0]);
             response.render("pages/detail", {
                 title: movie.title,
                 movie,

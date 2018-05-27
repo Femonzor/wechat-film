@@ -10,7 +10,7 @@ const save = (request, response) => {
                 to: commentData.tid,
                 content: commentData.content
             };
-            comment.reply.push(ready);
+            comment.replys.push(reply);
             comment.save((error, comment) => {
                 if (error) console.log(error);
                 response.redirect(`/movie/${movieId}`);

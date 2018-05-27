@@ -8,20 +8,37 @@
                 </div>
                 <div class="panel-body">
                     <ul class="media-list">
-                    {{#each comments}}
+                        {{#each comments as |comment|}}
                         <li class="media">
                             <div class="pull-left">
-                                <a class="comment" href="#comments" data-cid="{{_id}}", data-tid="{{from._id}}">
-                                    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIi8+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" alt="" class="media-object" style="width: 64px; height: 64px;">
+                                <a class="comment" href="#comments" data-cid="{{comment._id}}", data-tid="{{comment.from._id}}">
+                                    <img class="media-object" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIi8+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" alt="" class="media-object" style="width: 64px; height: 64px;">
                                 </a>
                             </div>
                             <div class="media-body">
-                                <h4 class="media-heading">{{from.name}}</h4>
-                                <p>{{content}}</p>
+                                <h4 class="media-heading">{{comment.from.name}}</h4>
+                                <p>{{comment.content}}</p>
                             </div>
+                                {{#each comment.replys as |reply|}}
+                                <div class="media">
+                                    <div class="pull-left">
+                                        <a href="#comments" class="commnet" data-cid="{{comment._id}}", data-tid="{{reply.from._id}}">
+                                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZWVlIi8+PHRleHQgdGV4dC1hbmNob3I9Im1pZGRsZSIgeD0iMzIiIHk9IjMyIiBzdHlsZT0iZmlsbDojYWFhO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjEycHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+NjR4NjQ8L3RleHQ+PC9zdmc+" alt="" class="media-object" style="width: 64px; height: 64px;">
+                                        </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <h4 class="media-heading">
+                                            {{reply.from.name}}
+                                            <span class="text-info">&nbsp;回复&nbsp;</span>
+                                            {{reply.to.name}}
+                                        </h4>
+                                        <p>{{reply.content}}</p>
+                                    </div>
+                                </div>
+                                {{/each}}
                             <hr>
                         </li>
-                    {{/each}}
+                        {{/each}}
                     </ul>
                     <div id="comments">
                         <form id="commentForm" action="/user/comment" method="POST">
