@@ -1,12 +1,11 @@
 <div class="container">
-    {{#each categories as |category|}}
     <div class="row">
         <div class="card bg-light flex-fill">
             <div class="card-header">
-                <a href="/results?cat={{category._id}}&p=1">{{category.name}}</a>
+                {{keyword}}
             </div>
             <div class="card-body">
-                {{#each category.movies as |movie|}}
+                {{#each movies as |movie|}}
                 <div class="col-md-2">
                     <div class="img-thumbnail">
                         <a href="/movie/{{movie._id}}">
@@ -22,5 +21,19 @@
             </div>
         </div>
     </div>
-    {{/each}}
+    <div class="row">
+        <ul class="pagination">
+            {{#for 1 5 1}}
+            {{#if (compare ../currentPage this)}}
+            <li class="active page-link page-item">
+                <span>{{../currentPage}}</span>
+            </li>
+            {{else}}
+            <li class="page-link">
+                <a href="/results?p={{this}}&{{../query}}">{{this}}</a>
+            </li>
+            {{/if}}
+            {{/for}}
+        </ul>
+    </div>
 </div>

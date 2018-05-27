@@ -62,15 +62,31 @@ const save = (request, response) => {
     } else {
         delete movieData._id;
         movieObj = new Movie(movieData);
-        const categoryId = movieObj.category;
+        const categoryId = movieData.category;
+        const categoryName = movieData.categoryName;
         movieObj.save((error, movie) => {
             if (error) console.log(error);
-            Category.findById(categoryId, (error, category) => {
-                category.movies.push(movie._id);
-                category.save((error, category) => {
-                    response.redirect(`/movie/${movie._id}`);
+            if (categoryId) {
+                Category.findById(categoryId, (error, category) => {
+                    category.movies.push(movie._id);
+                    category.save((error, category) => {
+                        response.redirect(`/movie/${movie._id}`);
+                    });
                 });
-            });
+            } else if (categoryName) {
+                const category = new Category({
+                    name: categoryName,
+                    movies: [movie._id]
+                });
+                category.save((error, category) => {
+                    if (error) console.log(error);
+                    movie.category = category._id;
+                    movie.save((error, movie) => {
+                        if (error) console.log(error);
+                        response.redirect(`/movie/${movie._id}`);
+                    });
+                });
+            }
         });
     }
 };

@@ -2,7 +2,21 @@
     <div class="row">
         <div class="pb-2 mt-4 mb-2 border-bottom flex-fill">
             <h1>{{title}}</h1>
-            <small>重度科幻迷</small>
+            <div class="row">
+                <div class="col-md-4">
+                    <small>重度科幻迷</small>
+                </div>
+                <div class="col-md-8">
+                    <form action="/results" method="get" class="clearfix">
+                        <div class="input-group col-sm-4 float-right">
+                            <input type="text" name="q" class="form-control">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit">搜索</button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>

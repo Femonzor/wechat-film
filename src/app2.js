@@ -42,12 +42,10 @@ app.engine("handlebars", expressHandlebars({
             if (typeof status === "string") result = result ? status : "";
             return result;
         },
-        myif: function (conditional, options) {
-            if (conditional) {
-                return options.fn(this);
-            } else {
-                return options.inverse(this);
-            }
+        for: function (from, to, increase, options) {
+            var blocks = "";
+            for (var i = from; i <= to; i += increase) blocks += options.fn(i);
+            return blocks;
         }
     }
 }));

@@ -12,6 +12,7 @@ export default app => {
     });
     
     app.get("/", IndexController.index);
+    app.get("/results", IndexController.search);
 
     app.get("/movie/:id", MovieController.detail);
     app.get("/admin/movie/new", UserController.signinRequired, UserController.adminRequired, MovieController.create);
