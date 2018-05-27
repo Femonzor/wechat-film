@@ -15,22 +15,22 @@
             </thead>
             <tbody>
                 {{#each movies}}
-                    <tr class="item-id-{{_id}}">
-                        <td>{{title}}</td>
-                        <td>{{director}}</td>
-                        <td>{{country}}</td>
-                        <td>{{year}}</td>
-                        <td>{{moment meta.createAt "YYYY-MM-DD"}}</td>
-                        <td>
-                            <a target="_blank" href="/movie/{{_id}}">查看</a>
-                        </td>
-                        <td>
-                            <a target="_blank" href="/admin/update/{{_id}}">修改</a>
-                        </td>
-                        <td>
-                            <button class="btn btn-danger delete" data-id="{{_id}}">删除</button>
-                        </td>
-                    </tr>
+                <tr class="item-id-{{_id}}">
+                    <td>{{title}}</td>
+                    <td>{{director}}</td>
+                    <td>{{country}}</td>
+                    <td>{{year}}</td>
+                    <td>{{moment meta.createAt "YYYY-MM-DD"}}</td>
+                    <td>
+                        <a target="_blank" href="/movie/{{_id}}">查看</a>
+                    </td>
+                    <td>
+                        <a target="_blank" href="/admin/movie/update/{{_id}}">修改</a>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger delete" data-id="{{_id}}">删除</button>
+                    </td>
+                </tr>
                 {{/each}}
             </tbody>
         </table>

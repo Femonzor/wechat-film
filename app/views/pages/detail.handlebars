@@ -47,7 +47,11 @@
                             <div class="form-group">
                                 <textarea name="comment[content]" rows="3" class="form-control"></textarea>
                             </div>
+                            {{#if user}}
                             <button class="btn btn-primary" type="submit">提交</button>
+                            {{else}}
+                            <a href="#" class="navbar-link" data-toggle="modal" data-target="#signinModal">登录后才能评论</a>
+                            {{/if}}
                         </form>
                     </div>
                 </div>

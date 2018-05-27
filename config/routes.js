@@ -2,6 +2,7 @@ import IndexController from "../app/controllers/index";
 import UserController from "../app/controllers/user";
 import MovieController from "../app/controllers/movie";
 import CommentController from "../app/controllers/comment";
+import CategoryController from "../app/controllers/category";
 
 export default app => {
     app.use((request, response, next) => {
@@ -27,4 +28,8 @@ export default app => {
     app.get("/logout", UserController.logout);
 
     app.post("/user/comment", UserController.signinRequired, CommentController.save);
+
+    app.get("/admin/category/new", UserController.signinRequired, UserController.adminRequired, CategoryController.create);
+    app.post("/admin/category", UserController.signinRequired, UserController.adminRequired, CategoryController.save);
+    app.get("/admin/category/list", UserController.signinRequired, UserController.adminRequired, CategoryController.list);
 };

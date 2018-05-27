@@ -1,5 +1,6 @@
 import Movie from "../models/movie";
 import Comment from "../models/comment";
+import Category from "../models/category";
 
 const detail = (request, response) => {
     const id = request.params.id;
@@ -9,7 +10,6 @@ const detail = (request, response) => {
         .populate("from", "name")
         .populate("replys.from replys.to", "name")
         .exec((error, comments) => {
-            if (comments[0].replys.length) console.log(comments[0].replys[0]);
             response.render("pages/detail", {
                 title: movie.title,
                 movie,
@@ -20,19 +20,12 @@ const detail = (request, response) => {
 };
 
 const create = (request, response) => {
-    response.render("pages/admin", {
-        title: "电影管理页",
-        movie: {
-            _id: "",
-            title: "",
-            director: "",
-            country: "",
-            year: "",
-            poster: "",
-            flash: "",
-            summary: "",
-            language: ""
-        }
+    Category.find({}, (error, categories) => {
+        response.render("pages/admin", {
+            title: "电影管理页",
+            categories,
+            movie: {}
+        });
     });
 };
 
@@ -41,9 +34,13 @@ const update = (request, response) => {
     if (id) {
         Movie.findById(id, (error, movie) => {
             if (error) console.log(error);
-            response.render("pages/admin", {
-                title: "imooc管理页",
-                movie
+            Category.find({}, (error, categories) => {
+                if (error) console.log(error);
+                response.render("pages/admin", {
+                    title: "电影管理页",
+                    movie,
+                    categories
+                });
             });
         });
     }
@@ -65,9 +62,15 @@ const save = (request, response) => {
     } else {
         delete movieData._id;
         movieObj = new Movie(movieData);
+        const categoryId = movieObj.category;
         movieObj.save((error, movie) => {
             if (error) console.log(error);
-            response.redirect(`/movie/${movie._id}`);
+            Category.findById(categoryId, (error, category) => {
+                category.movies.push(movie._id);
+                category.save((error, category) => {
+                    response.redirect(`/movie/${movie._id}`);
+                });
+            });
         });
     }
 };

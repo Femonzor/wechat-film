@@ -27,12 +27,27 @@ app.engine("handlebars", expressHandlebars({
             return content ? content.join("\n") : null;
         },
         contentFor: function (name, options) {
+            console.log("name:", name);
             var blocks = this._blocks || (this._blocks = {}),
                 block = blocks[name] || (blocks[name] = []);
-            block.push(options.fn(this));
+            return block.push(options.fn(this));
         },
         moment: function (time, format) {
             return moment(time).format(format);
+        },
+        compare: function (left, right, status) {
+            left += "";
+            right += "";
+            var result = left === right;
+            if (typeof status === "string") result = result ? status : "";
+            return result;
+        },
+        myif: function (conditional, options) {
+            if (conditional) {
+                return options.fn(this);
+            } else {
+                return options.inverse(this);
+            }
         }
     }
 }));
