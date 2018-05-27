@@ -1,44 +1,41 @@
-{{extend "../layout"}}
-{{block "content"}}
-    <div class="container">
-        <div class="row">
-            <table class="table table-hover table-bordered">
-                <thead>
-                    <tr>
-                        <th>电影名字</th>
-                        <th>导演</th>
-                        <th>国家</th>
-                        <th>上映年份</th>
-                        <th>录入时间</th>
-                        <th>查看</th>
-                        <th>更新</th>
-                        <th>删除</th>
+<div class="container">
+    <div class="row">
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th>电影名字</th>
+                    <th>导演</th>
+                    <th>国家</th>
+                    <th>上映年份</th>
+                    <th>录入时间</th>
+                    <th>查看</th>
+                    <th>更新</th>
+                    <th>删除</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each movies}}
+                    <tr class="item-id-{{_id}}">
+                        <td>{{title}}</td>
+                        <td>{{director}}</td>
+                        <td>{{country}}</td>
+                        <td>{{year}}</td>
+                        <td>{{moment meta.createAt "YYYY-MM-DD"}}</td>
+                        <td>
+                            <a target="_blank" href="/movie/{{_id}}">查看</a>
+                        </td>
+                        <td>
+                            <a target="_blank" href="/admin/update/{{_id}}">修改</a>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger delete" data-id="{{_id}}">删除</button>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    {{each movies movie}}
-                        <tr class="item-id-{{movie.id}}">
-                            <td>{{movie.title}}</td>
-                            <td>{{movie.director}}</td>
-                            <td>{{movie.country}}</td>
-                            <td>{{movie.year}}</td>
-                            <td>{{moment(movie.meta.createAt).format("YYYY-MM-DD")}}</td>
-                            <td>
-                                <a target="_blank" href="/movie/{{movie.id}}">查看</a>
-                            </td>
-                            <td>
-                                <a target="_blank" href="/admin/update/{{movie.id}}">修改</a>
-                            </td>
-                            <td>
-                                <button class="btn btn-danger delete" data-id="{{movie.id}}">删除</button>
-                            </td>
-                        </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-        </div>
+                {{/each}}
+            </tbody>
+        </table>
     </div>
-{{/block}}
-{{block "script"}}
+</div>
+{{#contentFor "script"}}
     <script src="/js/admin.js"></script>
-{{/block}}
+{{/contentFor}}

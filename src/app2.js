@@ -19,7 +19,6 @@ app.set("views", "app/views");
 app.engine("handlebars", expressHandlebars({
     layoutsDir: app.get("views") + "/layouts",
     defaultLayout: "layout",
-    // can be array
     partialsDir: app.get("views") + "/partials",
     helpers: {
         block: function (name) {
@@ -31,6 +30,9 @@ app.engine("handlebars", expressHandlebars({
             var blocks = this._blocks || (this._blocks = {}),
                 block = blocks[name] || (blocks[name] = []);
             block.push(options.fn(this));
+        },
+        moment: function (time, format) {
+            return moment(time).format(format);
         }
     }
 }));
@@ -48,7 +50,6 @@ app.use(session({
 
 if (app.get("env") === "development") {
     app.set("showStackError", true);
-    app.set('json spaces', 2);
     app.use(morgan(":method :url :status"));
     mongoose.set("debug", true);
 }
@@ -56,7 +57,6 @@ if (app.get("env") === "development") {
 routes(app);
 
 app.use(serveStatic("public"));
-app.locals.moment = moment;
 app.listen(port);
 
 console.log(`site started on port ${port}`);

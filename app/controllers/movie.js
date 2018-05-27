@@ -19,7 +19,7 @@ const detail = (request, response) => {
 
 const create = (request, response) => {
     response.render("pages/admin", {
-        title: "imooc管理页",
+        title: "电影管理页",
         movie: {
             _id: "",
             title: "",
