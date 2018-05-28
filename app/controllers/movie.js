@@ -1,3 +1,6 @@
+
+import fs from "fs";
+import path from "path";
 import Movie from "../models/movie";
 import Comment from "../models/comment";
 import Category from "../models/category";
@@ -50,6 +53,7 @@ const save = (request, response) => {
     const movieData = request.body.movie;
     const { _id } = movieData;
     let movieObj;
+    if (request.poster) movieData.poster = request.poster;
     if (_id) {
         Movie.findById(_id, (error, movie) => {
             if (error) console.log(error);
@@ -114,11 +118,32 @@ const del = (request, response) => {
     }
 };
 
+const savePoster = (request, response, next) => {
+    const posterData = request.files[0];
+    const filePath = posterData.path;
+    const { originalname } = posterData;
+    if (originalname) {
+        fs.readFile(filePath, (error, data) => {
+            const timeStamp = Date.now();
+            const type = posterData.mimetype.split("/")[1];
+            const poster = timeStamp + "." + type;
+            const newPath = path.join(__dirname, "../../", `/public/upload/${poster}`);
+            fs.writeFile(newPath, data, error => {
+                request.poster = poster;
+                next();
+            });
+        });
+    } else {
+        next();
+    }
+};
+
 export default {
     detail,
     create,
     update,
     save,
     list,
-    del
+    del,
+    savePoster
 };

@@ -46,7 +46,14 @@ app.engine("handlebars", expressHandlebars({
             var blocks = "";
             for (var i = from; i <= to; i += increase) blocks += options.fn(i);
             return blocks;
+        },
+        gt: function (left, right) {
+            return left > right;
+        },
+        contain: function (el, part) {
+            return el.indexOf(part) > -1;
         }
+
     }
 }));
 app.set("view engine", "handlebars");

@@ -1,8 +1,12 @@
+import multer from "multer";
+
 import IndexController from "../app/controllers/index";
 import UserController from "../app/controllers/user";
 import MovieController from "../app/controllers/movie";
 import CommentController from "../app/controllers/comment";
 import CategoryController from "../app/controllers/category";
+
+const upload = multer({ dest: "public/upload" });
 
 export default app => {
     app.use((request, response, next) => {
@@ -17,7 +21,8 @@ export default app => {
     app.get("/movie/:id", MovieController.detail);
     app.get("/admin/movie/new", UserController.signinRequired, UserController.adminRequired, MovieController.create);
     app.get("/admin/movie/update/:id", UserController.signinRequired, UserController.adminRequired, MovieController.update);
-    app.post("/admin/movie", UserController.signinRequired, UserController.adminRequired, MovieController.save);
+    app.post("/admin/movie", UserController.signinRequired, UserController.adminRequired,
+        upload.array("uploadPoster"), MovieController.savePoster, MovieController.save);
     app.get("/admin/movie/list", UserController.signinRequired, UserController.adminRequired, MovieController.list);
     app.delete("/admin/movie/list", UserController.signinRequired, UserController.adminRequired, MovieController.del);
 
