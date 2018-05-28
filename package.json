@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index",
     "start2": "node index2",
-    "dev:build": "gulp server"
+    "dev:build": "gulp server",
+    "dev:test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -50,6 +51,8 @@
     "babel-preset-stage-0": "^6.24.1",
     "browser-sync": "^2.24.4",
     "gulp": "^3.9.1",
-    "gulp-nodemon": "^2.2.1"
+    "gulp-mocha": "^6.0.0",
+    "gulp-nodemon": "^2.2.1",
+    "should": "^13.2.1"
   }
 }

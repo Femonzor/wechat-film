@@ -1,8 +1,11 @@
 "use strict";
 
 import gulp from "gulp";
+import mocha from "gulp-mocha";
+import babel from "babel-register";
 import browserSync from "browser-sync";
 import nodemon from "nodemon";
+import should from "should";
 
 const { reload } = browserSync;
 
@@ -18,8 +21,8 @@ gulp.task("node", () => {
 
 gulp.task("server", ["node"], () => {
     const files = [
-        "models/**/*.js",
-        "schemas/**/*.js",
+        "app/models/**/*.js",
+        "app/schemas/**/*.js",
         "src/app2.js"
     ];
     const staticFiles = [
@@ -33,4 +36,12 @@ gulp.task("server", ["node"], () => {
         reloadDelay: 1500
     });
     gulp.watch(staticFiles).on("change", browserSync.reload);
+});
+
+gulp.task("test", () => {
+    return gulp.src(["test/**/*.js"], { read: false })
+        .pipe(mocha({
+            reporter: "spec",
+            require: ["babel-core/register"]
+        }));
 });

@@ -8,6 +8,9 @@ import Category from "../models/category";
 const detail = (request, response) => {
     const id = request.params.id;
     Movie.findById(id, (error, movie) => {
+        Movie.update({ _id: id }, { $inc: { pv: 1 } }, error => {
+            if (error) console.log(error);
+        });
         Comment
         .find({movie: id})
         .populate("from", "name")
