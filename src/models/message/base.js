@@ -1,4 +1,4 @@
-import { type } from "../../util/common";
+import { type } from "../../utils/common";
 
 class Base {
     constructor() { }

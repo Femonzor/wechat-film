@@ -1,6 +1,6 @@
 import Message from "../message";
 import MessageArticle from "../article";
-import { NEWS_TYPE } from "../../../constant/message";
+import { NEWS_TYPE } from "../../../constants/message";
 
 class NewsMessage extends Message {
     constructor(paramObj) {

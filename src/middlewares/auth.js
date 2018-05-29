@@ -2,9 +2,9 @@
 
 import sha1 from "sha1";
 import getRawBody from "raw-body";
-import Wechat from "../model/wechat";
-import { parseXMLAsync, formatMessage } from "../util/xml";
-import { reply } from "../util/handle";
+import Wechat from "../models/wechat";
+import { parseXMLAsync, formatMessage } from "../utils/xml";
+import { reply } from "../utils/handle";
 
 export default options => {
     const accessToken = new Wechat(options);

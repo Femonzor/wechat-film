@@ -1,5 +1,5 @@
 import Message from "../message";
-import { TEXT_TYPE } from "../../../constant/message";
+import { TEXT_TYPE } from "../../../constants/message";
 
 class TextMessage extends Message {
     constructor(paramObj) {

@@ -1,6 +1,6 @@
 import Message from "../message";
 import MessageVideo from "../video";
-import { VIDEO_TYPE } from "../../../constant/message";
+import { VIDEO_TYPE } from "../../../constants/message";
 
 class VideoMessage extends Message {
     constructor(paramObj) {

@@ -1,15 +1,19 @@
 import { join } from "path";
+import Wechat from "./models/wechat";
 import { readFileAsync, writeFileAsync } from "./utils/file";
 
 const tokenFile = join(__dirname, "token.txt");
 const ticketFile = join(__dirname, "ticket.txt");
 const prefix = "https://api.weixin.qq.com/cgi-bin";
 
-export default {
+const config = {
     wechat: {
         appId: "wxa388f3adf1a0e8a5",
         appSecret: "cc11b92b483f477267a1618d6e8b1872",
+        // appId: "wx0281c9c831a2abdc",
+        // appSecret: "d33a78c03d2217b6b484336503b1ee25",
         token: "ftxbtfj9j6nrippoqkl0v781",
+        encodingAESKey: "RHJZRT1gaQWtvnMpOg0FJGH8xarQbN74wyboKrrs5kR",
         getAccessToken: () => readFileAsync(tokenFile),
         saveAccessToken: (content) => writeFileAsync(tokenFile, content),
         getTicket: () => readFileAsync(ticketFile),
@@ -73,4 +77,9 @@ export default {
             get: `${prefix}/ticket/getticket`
         }
     }
+};
+
+export const getWechat = () => {
+    const wechatApi = new Wechat(config.wechat);
+    return wechatApi;
 };

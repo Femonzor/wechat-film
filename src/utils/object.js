@@ -1,15 +1,15 @@
-import ReplyTextMessage from "../model/message/reply/textMessage";
-import ReplyNewsMessage from "../model/message/reply/newsMessage";
-import ReplyImageMessage from "../model/message/reply/imageMessage";
-import ReplyVideoMessage from "../model/message/reply/videoMessage";
-import ReplyVoiceMessage from "../model/message/reply/voiceMessage";
-import ReplyMusicMessage from "../model/message/reply/musicMessage";
+import ReplyTextMessage from "../models/message/reply/textMessage";
+import ReplyNewsMessage from "../models/message/reply/newsMessage";
+import ReplyImageMessage from "../models/message/reply/imageMessage";
+import ReplyVideoMessage from "../models/message/reply/videoMessage";
+import ReplyVoiceMessage from "../models/message/reply/voiceMessage";
+import ReplyMusicMessage from "../models/message/reply/musicMessage";
 import { type } from "./common";
-import Wechat from "../model/wechat";
-import menu from "../constant/menu";
-import config from "../config";
+import Wechat from "../models/wechat";
+import menu from "../constants/menu";
 
-const wechatApi = new Wechat(config.wechat);
+import { getWechat } from "../wx";
+const wechatApi = getWechat();
 
 export const getReplyObject = async message => {
     let data, replyType, result;

@@ -1,6 +1,6 @@
 import Message from "../message";
 import MessageMusic from "../music";
-import { MUSIC_TYPE } from "../../../constant/message";
+import { MUSIC_TYPE } from "../../../constants/message";
 
 class MusicMessage extends Message {
     constructor(paramObj) {

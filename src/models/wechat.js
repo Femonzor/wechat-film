@@ -1,7 +1,7 @@
 import { createReadStream } from "fs";
 import request from "request";
 import config from "../config"
-import { type } from "../util/common";
+import { type } from "../utils/common";
 
 const requestPromise = Promise.promisify(request);
 const { api } = config;

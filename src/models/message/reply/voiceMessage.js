@@ -1,6 +1,6 @@
 import Message from "../message";
 import MessageVoice from "../voice";
-import { VOICE_TYPE } from "../../../constant/message";
+import { VOICE_TYPE } from "../../../constants/message";
 
 class VoiceMessage extends Message {
     constructor(paramObj) {
