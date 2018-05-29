@@ -6,7 +6,7 @@ const tokenFile = join(__dirname, "token.txt");
 const ticketFile = join(__dirname, "ticket.txt");
 const prefix = "https://api.weixin.qq.com/cgi-bin";
 
-const config = {
+export const config = {
     wechat: {
         appId: "wxa388f3adf1a0e8a5",
         appSecret: "cc11b92b483f477267a1618d6e8b1872",
