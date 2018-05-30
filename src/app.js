@@ -8,6 +8,7 @@ import game from "./controllers/game";
 
 import menu from "./constants/menu";
 import { getWechat, config } from "./wx";
+import { hear } from "./controllers/wechat";
 const wechatApi = getWechat();
 
 wechatApi.deleteMenu().then(() => {
@@ -23,8 +24,10 @@ app
     .use(router.routes())
     .use(router.allowedMethods());
 router.get("/movie", game.movie);
+router.get("/wx", hear);
+router.post("/wx", hear);
 
-app.use(auth(config.wechat));
+// app.use(auth(config.wechat));
 
 app.listen(9999);
 console.log("Listening: 9999");

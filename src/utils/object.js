@@ -23,7 +23,16 @@ export const getReplyObject = async message => {
             const { EventKey, Ticket } = message;
             if (Ticket) console.log(`扫二维码进来: ${EventKey} ${Ticket}`);
             else console.log("关注公众号");
-            data = "您好!"
+            data = `欢迎关注本公众号
+            回复 1，测试文字回复
+            回复 2，测试图文回复
+            回复 首页，进入电影首页
+            回复 登录，进入微信登录绑定
+            回复 游戏，进入游戏页面
+            回复 电影名字，查询电影信息
+            回复 语音，查询电影信息
+            也可以点击<a href="https://operis.serveo.net/movie">语音查电影</a>
+            `;
         } else if (Event === "unsubscribe") {
             console.log("取消关注!");
         } else if (Event === "LOCATION") {
@@ -65,8 +74,11 @@ export const getReplyObject = async message => {
         }
         replyType = "text";
     } else if (MsgType === "text") {
+        /**
+         * 测试公众号功能用
+         */
         const { Content } = message;
-        if (Content === "1") {
+        /*if (Content === "1") {
             replyType = "text";
             data = "大米";
         } else if (Content === "2") {
@@ -322,7 +334,7 @@ export const getReplyObject = async message => {
             console.log(`menuResult: ${JSON.stringify(menuResult)}`);
             data = "菜单";
             replyType = "text";
-        }
+        }*/
     } else if (MsgType === "image") {
         data = "1";
         replyType = "text";
