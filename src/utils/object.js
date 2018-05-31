@@ -7,6 +7,7 @@ import ReplyMusicMessage from "../models/message/reply/musicMessage";
 import { type } from "./common";
 import Wechat from "../models/wechat";
 import menu from "../constants/menu";
+import MovieApi from "../api/movie";
 
 import { getWechat } from "../wx";
 const wechatApi = getWechat();
@@ -78,6 +79,31 @@ export const getReplyObject = async message => {
          * 测试公众号功能用
          */
         const { Content } = message;
+        if (false) {
+            var a = 1;
+        } else {
+            let movies = await MovieApi.searchByName(context);
+            if (!movies || movies.length === 0) {
+                // 调豆瓣api
+                movies = [];
+            }
+            if (movies && movies.length) {
+                replyType = "news";
+                data = [];
+                movies = movies.slice(0, 10);
+                movies.forEach(movie => {
+                    data.push({
+                        Title: movie.title,
+                        Description: movie.title,
+                        PicUrl: movie.images.large,
+                        Url: movie.alt
+                    });
+                });
+            } else {
+                replyType = "text";
+                data = `没有查询到与 ${Content} 匹配的电影，请换一个名字试试～`;
+            }
+        }
         /*if (Content === "1") {
             replyType = "text";
             data = "大米";
