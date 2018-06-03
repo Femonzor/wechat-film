@@ -33,6 +33,9 @@ app.use(koaViews(__dirname + "/views", {
         handlebars: "handlebars"
     },
     options: {
+        partials: {
+            head: __dirname + "/views/partials/wechat_head"
+        },
         helpers: {
             block: function (name) {
                 var blocks = this._blocks,

@@ -31,7 +31,6 @@ export default options => {
                 context.body = "wrong";
                 return false;
             }
-            console.log("context.req:", context.req);
             const data = await getRawBody(context.req, {
                 length: context.request.length,
                 limit: "1mb",

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {{> head }}
+        <style type="text/css">
+            .page__hd {
+                padding: 40px
+            }
+            .page__title {
+                text-align: left;
+                font-size: 20px;
+                font-weight: 400
+            }
+        </style>
+    </head>
+    <body>
+        <div class="page__hd">
+            <h1 class="page__title">{{movie.title}}</h1>
+        </div>
+        <div class="page__bd">
+            <div class="weui-cells__title">电影介绍</div>
+            <div class="weui-cells">
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <p>电影名字</p>
+                    </div>
+                    <div class="weui-cell__ft">{{movie.title}}</div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <p>导演</p>
+                    </div>
+                    <div class="weui-cell__ft">{{movie.director}}</div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <p>国家</p>
+                    </div>
+                    <div class="weui-cell__ft">{{movie.country}}</div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <p>语言</p>
+                    </div>
+                    <div class="weui-cell__ft">{{movie.language}}</div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__bd">
+                        <p>上映年份</p>
+                    </div>
+                    <div class="weui-cell__ft">{{movie.year}}</div>
+                </div>
+            </div>
+            <div class="weui-cells">
+                <section>
+                    <img src="{{movie.poster}}" style="width: 100%;" alt="">
+                </section>
+            </div>
+            <div class="weui-article">
+                <section>
+                    <p>{{movie.summary}}</p>
+                </section>
+            </div>
+        </div>
+    </body>
+</html>
