@@ -1,76 +1,75 @@
 import User from "../models/user";
 
-const signup = (request, response) => {
-    const userData = request.body.user;
-    const user = new User(userData);
-    User.findOne({ name: userData.name }, (error, user) => {
-        if (error) console.log(error);
-        if (user) return response.redirect("/signin");
-        user.save((error, user) => {
-            if (error) console.log(error);
-            console.log(user);
-            response.redirect("/");
-        });
-    });
+const signup = async context => {
+    const userData = context.request.body.user;
+    let user = new User(userData);
+    user = await User.findOne({ name: userData.name }).exec();
+    if (user) {
+        context.redirect("/signin");
+    } else {
+        user = await user.save();
+        console.log(user);
+        context.redirect("/");
+    }
 };
 
-const list = (request, response) => {
-    User.fetch((error, users) => {
-        if (error) console.log(error);
-        response.render("pages/userlist", {
-            title: "用户列表页",
-            users
-        });
-    });
-};
-
-const signin = (request, response) => {
-    const userData = request.body.user;
+const signin = async context => {
+    const userData = context.request.body.user;
     const { name, password } = userData;
-    User.findOne({ name }, (error, user) => {
-        if (error) console.log(error);
-        if (!user) {
-            return response.redirect("/signup");
-        }
-        user.comparePassword(password, (error, isMatch) => {
-            if (error) console.log(error);
-            if (isMatch) {
-                request.session.user = user;
-                return response.redirect("/");
-            } else {
-                return response.redirect("/signin");
-            }
-        });
+    let user = await User.findOne({ name }).exec();
+    if (!user) {
+        context.redirect("/signup");
+    }
+    const isMatch = await user.comparePassword(password);
+    if (isMatch) {
+        request.session.user = user;
+        context.redirect("/");
+    } else {
+        context.redirect("/signin");
+    }
+};
+
+const list = async context => {
+    const users = await User.find({}).sort("meta.updateAt").exec();
+    response.render("pages/userlist", {
+        title: "用户列表页",
+        users
     });
 };
 
-const logout = (request, response) => {
-    delete request.session.user;
-    response.redirect("/");
+const logout = async context => {
+    delete context.session.user;
+    context.redirect("/");
 };
 
-const showSignin = (request, response) => {
+const showSignin = async context => {
     response.render("pages/signin", {
         title: "登录页面",
     });
 };
 
-const showSignup = (request, response) => {
+const showSignup = async context => {
     response.render("pages/signup", {
         title: "注册页面",
     });
 };
 
-const signinRequired = (request, response, next) => {
+const signinRequired = async (context, next) => {
     const user = request.session.user;
-    if (!user) return response.redirect("/signin");
-    next();
+    if (!user) {
+        context.redirect("/signin");
+    } else {
+        await next();
+    }
 };
 
-const adminRequired = (request, response, next) => {
+const adminRequired = (context, next) => {
     const user = request.session.user;
-    if (user.role <= 10) return response.redirect("/signin");
-    next();
+    if (user.role <= 10) {
+        context.redirect("/signin");
+    } else {
+        await next();
+    }
 };
 
 export default {

@@ -1,7 +1,7 @@
 import Comment from "../models/comment";
 
-const save = (request, response) => {
-    const commentData = request.body.comment;
+const save = async context => {
+    const commentData = context.request.body.comment;
     const movieId = commentData.movie;
     if (commentData.cid) {
         Comment.findById(commentData.cid, (error, comment) => {
@@ -13,14 +13,14 @@ const save = (request, response) => {
             comment.replys.push(reply);
             comment.save((error, comment) => {
                 if (error) console.log(error);
-                response.redirect(`/movie/${movieId}`);
+                context.redirect(`/movie/${movieId}`);
             });
         });
     } else {
         const commentObj = new Comment(commentData);
         commentObj.save((error, comment) => {
             if (error) console.log(error);
-            response.redirect(`/movie/${movieId}`);
+            context.redirect(`/movie/${movieId}`);
         });
     }
 };

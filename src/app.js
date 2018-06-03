@@ -3,16 +3,14 @@ import Router from "koa-router";
 import crypto from "crypto";
 import mongoose from "mongoose";
 import connectMongo from "connect-mongo";
-import session from "express-session";
+import session from "koa-session";
 import koaViews from "koa-views";
-import auth from "./middlewares/auth";
-import Wechat from "./models/wechat";
-
 import game from "./controllers/game";
-
 import menu from "./constants/menu";
 import { getWechat, config } from "./wx";
 import { hear } from "./controllers/wechat";
+import User from "./models/user";
+
 const wechatApi = getWechat();
 
 wechatApi.deleteMenu().then(() => {
@@ -26,6 +24,8 @@ const router = new Router();
 const mongoStore = connectMongo(session);
 const dbUrl = "mongodb://localhost:27017/film";
 mongoose.connect(dbUrl);
+app.keys = ["film"];
+app.use(session(app));
 
 app.use(koaViews(__dirname + "/views", {
     extension: "handlebars",
@@ -73,15 +73,20 @@ app.use(koaViews(__dirname + "/views", {
     }
 }));
 
+app.use(async (context, next) => {
+    const user = context.session.user;
+    if (user && user._id) {
+        context.session.user = await User.findOne({ _id: user._id }).exec();
+        context.state.user = context.session.user;
+    } else {
+        context.state.user = null;
+    }
+    await next();
+});
+
 app
     .use(router.routes())
     .use(router.allowedMethods());
-router.get("/movie", game.guess);
-router.get("/movie/:id", game.find);
-router.get("/wx", hear);
-router.post("/wx", hear);
-
-// app.use(auth(config.wechat));
 
 app.listen(9999);
 console.log("Listening: 9999");

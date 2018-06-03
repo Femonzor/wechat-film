@@ -26,11 +26,13 @@ const UserSchema = new mongoose.Schema({
 });
 
 UserSchema.methods = {
-    comparePassword: function (password, callback) {
-        bcrypt.compare(password, this.password, (error, isMatch) => {
-            if (error) return callback(error);
-            callback(null, isMatch);
-        });
+    comparePassword: function (password) {
+        var self = this;
+        return function (callback) {
+            bcrypt.compare(password, self.password, (error, isMatch) => {
+                callback(error, isMatch);
+            });
+        }
     }
 };
 

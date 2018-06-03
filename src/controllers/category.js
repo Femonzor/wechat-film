@@ -1,6 +1,6 @@
 import Category from "../models/category";
 
-const create = (request, response) => {
+const create = async context => {
     response.render("pages/category_admin", {
         title: "电影分类管理页",
         category: {
@@ -10,12 +10,12 @@ const create = (request, response) => {
     });
 };
 
-const save = (request, response) => {
-    const categoryData = request.body.category;
+const save = async context => {
+    const categoryData = context.request.body.category;
     const categoryObj = new Category(categoryData);
     categoryObj.save((error, category) => {
         if (error) console.log(error);
-        response.redirect("/admin/category/list");
+        context.redirect("/admin/category/list");
     });
     // if (_id) {
     //     Movie.findById(_id, (error, movie) => {
@@ -23,7 +23,7 @@ const save = (request, response) => {
     //         movieObj = Object.assign(movie, movieData);
     //         movieObj.save((error, movie) => {
     //             if (error) console.log(error);
-    //             response.redirect(`/movie/${movie._id}`);
+    //             context.redirect(`/movie/${movie._id}`);
     //         });
     //     });
     // } else {
@@ -31,12 +31,12 @@ const save = (request, response) => {
     //     movieObj = new Movie(movieData);
     //     movieObj.save((error, movie) => {
     //         if (error) console.log(error);
-    //         response.redirect(`/movie/${movie._id}`);
+    //         context.redirect(`/movie/${movie._id}`);
     //     });
     // }
 };
 
-const list = (request, response) => {
+const list = async context => {
     Category.fetch((error, categories) => {
         if (error) console.log(error);
         response.render("pages/categorylist", {

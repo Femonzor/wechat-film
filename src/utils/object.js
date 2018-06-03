@@ -95,7 +95,7 @@ export const getReplyObject = async message => {
                         Title: movie.title,
                         Description: movie.title,
                         PicUrl: movie.poster,
-                        Url: `http://green-badger-34.localtunnel.me/movie/${movie._id}`
+                        Url: `http://green-badger-34.localtunnel.me/wechat/movie/${movie._id}`
                     });
                 });
             } else {
