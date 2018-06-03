@@ -35,6 +35,7 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.6",
     "handlebars": "^4.0.11",
+    "isomorphic-fetch": "^2.2.1",
     "koa": "^2.4.1",
     "koa-router": "^7.4.0",
     "koa-views": "^6.1.4",

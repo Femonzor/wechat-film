@@ -82,15 +82,14 @@ export const getReplyObject = async message => {
         if (false) {
             var a = 1;
         } else {
-            let movies = await MovieApi.searchByName(context);
+            let movies = await MovieApi.searchByName(Content);
             if (!movies || movies.length === 0) {
-                // 调豆瓣api
-                movies = [];
+                movies = await MovieApi.searchByDouban(Content);
             }
             if (movies && movies.length) {
                 replyType = "news";
                 data = [];
-                movies = movies.slice(0, 10);
+                movies = movies.slice(0, 5);
                 movies.forEach(movie => {
                     data.push({
                         Title: movie.title,

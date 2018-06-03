@@ -24,18 +24,32 @@ const searchByCategory = async categoryId => {
 };
 
 const searchByName = async keyword => {
-    const movies = await Movie
-        .find({ title: new RegExp(keyword + ".*", "i") })
-        .exec();
-    return movies;
+    try {
+        const movies = await Movie
+            .find({ title: new RegExp(keyword + ".*", "i") })
+            .exec();
+        return movies;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
 };
 
 const searchByDouban = async keyword => {
-    
+    try {
+        const response = await fetch(`https://api.douban.com/v2/movie/search?q=${encodeURIComponent(keyword)}`);
+        const data = await response.json();
+        const { subjects } = data;
+        return subjects;
+    } catch (error) {
+        console.log(error);
+        return null;
+    }
 };
 
 export default {
     findAll,
     searchByCategory,
-    searchByName
+    searchByName,
+    searchByDouban
 };

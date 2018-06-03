@@ -1,6 +1,6 @@
 import MovieApi from "../api/movie";
 
-const index = async (context, next) => {
+const index = async context => {
     const categories = await MovieApi.findAll();
     context.render("pages/index", {
         title: "电影首页",
@@ -8,10 +8,10 @@ const index = async (context, next) => {
     });
 };
 
-const search = async (request, response) => {
-    const categoryId = request.query.cat;
-    const page = request.query.p || 1;
-    const q = request.query.q;
+const search = async context => {
+    const categoryId = context.query.cat;
+    const page = context.query.p || 1;
+    const q = context.query.q;
     const count = 2;
     const index = (page - 1) * count;
     if (categoryId) {
@@ -19,7 +19,7 @@ const search = async (request, response) => {
         const category = categories[0] || {};
         const movies = category.movies || [];
         const results = movies.slice(index, index + count);
-        response.render("pages/results", {
+        context.render("pages/results", {
             title: "结果列表页面",
             keyword: category.name,
             currentPage: page,
@@ -30,7 +30,7 @@ const search = async (request, response) => {
     } else {
         const movies = await MovieApi.searchByName(q);
         const results = movies.slice(index, index + count);
-        response.render("pages/results", {
+        context.render("pages/results", {
             title: "结果列表页面",
             keyword: q,
             currentPage: page,
