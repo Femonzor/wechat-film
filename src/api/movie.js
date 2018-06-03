@@ -37,10 +37,34 @@ const searchByName = async keyword => {
 
 const searchByDouban = async keyword => {
     try {
+        const movies = [];
         const response = await fetch(`https://api.douban.com/v2/movie/search?q=${encodeURIComponent(keyword)}`);
         const data = await response.json();
         const { subjects } = data;
-        return subjects;
+        if (subjects.length) {
+            let queryArray = [];
+            subjects.forEach(item => {
+                queryArray.push(async () => {
+                    let movie = await Movie.findOne({ doubanId: item.id });
+                    if (!movie) {
+                        const directors = item.directors || [];
+                        const director = directors[0] || {};
+                        movie = new Movie({
+                            director: director.name || "",
+                            title: item.title,
+                            doubanId: item.id,
+                            poster: item.images.large,
+                            year: item.year,
+                            genres: item.genres || []
+                        });
+                        movie = await movie.save();
+                    }
+                    movies.push(movie);
+                });
+            });
+            await Promise.all(queryArray);
+        }
+        return movies;
     } catch (error) {
         console.log(error);
         return null;

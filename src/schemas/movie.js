@@ -6,11 +6,13 @@ const ObjectId = Schema.Types.ObjectId;
 const MovieSchema = new Schema({
     director: String,
     title: String,
+    doubanId: String,
     language: String,
     country: String,
     summary: String,
     flash: String,
     poster: String,
+    genres: [String],
     year: Number,
     pv: {
         type: Number,

@@ -94,8 +94,8 @@ export const getReplyObject = async message => {
                     data.push({
                         Title: movie.title,
                         Description: movie.title,
-                        PicUrl: movie.images.large,
-                        Url: movie.alt
+                        PicUrl: movie.poster,
+                        Url: `http://spotty-lionfish-6.localtunnel.me/movie/${movie._id}`
                     });
                 });
             } else {
